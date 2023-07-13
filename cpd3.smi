@@ -1,0 +1,15 @@
+SMILES Name 
+O=CC1CCCC(Cc2ccc(O)cc2)C1=O 0
+O=CC1CCCC(Cc2ccccc2)C1=O 1
+CC(=O)C1CCCC(Cc2ccc(O)cc2)C1=O 2
+CC(=O)C1CCCC(Cc2ccccc2)C1=O 3
+CCC(=O)C1CCCC(Cc2ccc(O)cc2)C1=O 4
+CCC(=O)C1CCCC(Cc2ccccc2)C1=O 5
+O=C(CCc1ccccc1)C1CCCC(Cc2ccc(O)cc2)C1=O 6
+O=C1CCCCC1C(=O)CCc1ccccc1 7
+CC1CCCC(C(=O)CCc2ccccc2)C1=O 8
+O=C(CCc1ccccc1)C1CCCC(Cc2ccccc2)C1=O 9
+O=C1CCCCC1C(=O)CCc1ccc(O)cc1 10
+CC1CCCC(C(=O)CCc2ccc(O)cc2)C1=O 11
+O=C(CCc1ccc(O)cc1)C1CCCC(Cc2ccccc2)C1=O 12
+O=C(CCc1ccc(O)cc1)C1CCCC(Cc2ccc(O)cc2)C1=O 13

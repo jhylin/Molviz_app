@@ -15,23 +15,13 @@ import pandas as pd
 # Add RDKit
 from rdkit import Chem
 from rdkit.Chem import Draw
+from rdkit.Chem.rdmolfiles import SmilesWriter, SmilesMolSupplier
 from io import StringIO
 import datamol as dm
 
 
 # ***Specify data source***
-# **Update data section**
-# Example SMILES
-# Canonical SMILES of calcitriol - CC(CCCC(C)(C)O)C1CCC2C1(CCCC2=CC=C3CC(CC(C3=C)O)O)C
-# Canonical SMILES of ubiquinol - CC1=C(C(=C(C(=C1O)OC)OC)O)CC=C(C)CCC=C(C)CCC=C(C)CCC=C(C)CCC=C(C)CCC=C(C)CCC=C(C)CCC=C(C)CCC=C(C)CCC=C(C)C
 
-smiles = """CC(CCCC(C)(C)O)C1CCC2C1(CCCC2=CC=C3CC(CC(C3=C)O)O)C, 
-            CC1=C(C(=C(C(=C1O)OC)OC)O)CC=C(C)CCC=C(C)CCC=C(C)CCC=C(C)CCC=C(C)CCC=C(C)CCC=C(C)CCC=C(C)CCC=C(C)CCC=C(C)C,
-            C(CC(=O)N)C(C(=O)O)N
-"""
-sm = StringIO(smiles)
-df = pd.read_csv(sm, names = ["SMILES", "Names"])
-df["mol"] = df.SMILES.apply(Chem.MolFromSmiles)
 
 
 # User interface---
@@ -45,17 +35,17 @@ app_ui = ui.page_fluid(
         ui.row(
             # Specify input - ?allow different dataframes of SMILES for selection
             ui.input_select(
-                "SMILES",
-                "Choose a compound:", 
-                {"CC(CCCC(C)(C)O)C1CCC2C1(CCCC2=CC=C3CC(CC(C3=C)O)O)C": "calcitriol", 
-                 "CC1=C(C(=C(C(=C1O)OC)OC)O)CC=C(C)CCC=C(C)CCC=C(C)CCC=C(C)CCC=C(C)CCC=C(C)CCC=C(C)CCC=C(C)CCC=C(C)CCC=C(C)C": "ubiquinol"},
+                "filename",
+                "Choose a file:", 
+                {"cefe.smi": "cefepime", 
+                 "cpd3.smi": "cpd3"},
             ),
 
             #ui.input_action_button("go", "Go!", class_="btn-success"),
             ),
         # Output
-        #ui.output_ui("image")
-        output_widget("image")
+        ui.output_ui("image")
+        #output_widget("image")
     )
 
 
@@ -64,10 +54,18 @@ app_ui = ui.page_fluid(
 def server(input, output, session):
     @output
     @render_widget
-    #@render.ui
-    @reactive.event(input.go, ignore_none=False)
+    @render.ui
+    #@reactive.event(input.go, ignore_none=False)
 
-    def image():
+    def image(filename):
+        # Read in a simple list of SMILES from .smi file
+        suppl = SmilesMolSupplier(filename)
+        # Convert a list of molecules into a dataframe
+        mols = dm.to_df(suppl)
+        # Generate a RDKit molecule column
+        mols["mol"] = mols.smiles.apply(Chem.MolFromSmiles)
+        # Display first molecule in dataframe
+        mols.iloc[0]["mol"]
         
         
   
