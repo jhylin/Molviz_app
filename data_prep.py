@@ -14,6 +14,7 @@
 
 # Import pandas
 import pandas as pd
+import polars as pl
 
 #import ipywidgets as ipy
 #from IPython.display import HTML, IFrame, display
@@ -27,19 +28,44 @@ import datamol as dm
 
 
 # ***Specify data source***
+# Reading from .smi file
+# # Read in a simple list of SMILES from .smi file
+# suppl = SmilesMolSupplier("cefe.smi")
+# suppl
 
-# Read in a simple list of SMILES from .smi file
-suppl = SmilesMolSupplier("cefe.smi")
-suppl
+# # Convert a list of molecules into a dataframe
+# mols = dm.to_df(suppl)
+# mols
 
-# Convert a list of molecules into a dataframe
-mols = dm.to_df(suppl)
+# # Generate a RDKit molecule column
+# mols["mol"] = mols.smiles.apply(Chem.MolFromSmiles)
+# # Show full dataframe - smiles & mol columns
+# mols
+
+# # Display first molecule in dataframe
+# mols.iloc[0]["mol"]
+
+# Function:
+    # def image(filename):
+    #     # Read in a simple list of SMILES from .smi file
+    #     suppl = SmilesMolSupplier(input.filename)
+    #     # Convert a list of molecules into a dataframe
+    #     mols = dm.to_df(suppl)
+    #     # Generate a RDKit molecule column
+    #     mols["mol"] = mols.smiles.apply(Chem.MolFromSmiles)
+    #     # Display first molecule in dataframe
+    #     image = mols.iloc[0]["mol"]
+
+    # return image
+
+
+
+df = pl.read_csv("df_ai.csv")
+#df.head()
+df = df.to_pandas()
+#df.head()
+#type(df)
+df["mol"] = df.Smiles.apply(Chem.MolFromSmiles)
+df
+mols = df["mol"]
 mols
-
-# Generate a RDKit molecule column
-mols["mol"] = mols.smiles.apply(Chem.MolFromSmiles)
-# Show full dataframe - smiles & mol columns
-mols
-
-# Display first molecule in dataframe
-mols.iloc[0]["mol"]

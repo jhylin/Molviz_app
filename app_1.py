@@ -8,6 +8,7 @@ import shinyswatch
 
 # Import pandas
 import pandas as pd
+import polars as pl
 
 #import ipywidgets as ipy
 #from IPython.display import HTML, IFrame, display
@@ -15,13 +16,19 @@ import pandas as pd
 # Add RDKit
 from rdkit import Chem
 from rdkit.Chem import Draw
-from rdkit.Chem.rdmolfiles import SmilesWriter, SmilesMolSupplier
+#from rdkit.Chem.rdmolfiles import SmilesWriter, SmilesMolSupplier
 from io import StringIO
 import datamol as dm
 
 
 # ***Specify data source***
-
+df = pl.read_csv("df_ai.csv")
+#df.head()
+df = df.to_pandas()
+#df.head()
+#type(df)
+df["mol"] = df.Smiles.apply(Chem.MolFromSmiles)
+#df.head()
 
 
 # User interface---
@@ -35,8 +42,8 @@ app_ui = ui.page_fluid(
         ui.row(
             # Specify input
             ui.input_select(
-                "filename",
-                "Choose a file:", 
+                "Name",
+                "Choose a compound:", 
                 {"cefe.smi": "cefepime", 
                  "cpd3.smi": "cpd3"},
             ),
@@ -57,17 +64,7 @@ def server(input, output, session):
     @render.ui
     #@reactive.event(input.go, ignore_none=False)
 
-    def image(filename):
-        # Read in a simple list of SMILES from .smi file
-        suppl = SmilesMolSupplier(filename)
-        # Convert a list of molecules into a dataframe
-        mols = dm.to_df(suppl)
-        # Generate a RDKit molecule column
-        mols["mol"] = mols.smiles.apply(Chem.MolFromSmiles)
-        # Display first molecule in dataframe
-        image = mols.iloc[0]["mol"]
 
-    return image
         
     
         
