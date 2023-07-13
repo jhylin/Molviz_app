@@ -33,7 +33,7 @@ app_ui = ui.page_fluid(
         ui.h3("Headings"),
         # Input
         ui.row(
-            # Specify input - ?allow different dataframes of SMILES for selection
+            # Specify input
             ui.input_select(
                 "filename",
                 "Choose a file:", 
@@ -65,11 +65,10 @@ def server(input, output, session):
         # Generate a RDKit molecule column
         mols["mol"] = mols.smiles.apply(Chem.MolFromSmiles)
         # Display first molecule in dataframe
-        mols.iloc[0]["mol"]
-        
-        
-  
+        image = mols.iloc[0]["mol"]
 
+    return image
+        
     
         
 # Combine UI & server into Shiny app
