@@ -22,10 +22,15 @@ import polars as pl
 # Add RDKit
 from rdkit import Chem
 from rdkit.Chem import Draw
-from rdkit.Chem.Draw import rdMolDraw2D
+from rdkit.Chem.Draw import rdMolDraw2D, MolsToGridImage
 from rdkit.Chem.rdmolfiles import SmilesWriter, SmilesMolSupplier
+
+from rdkit.Chem.Draw import IPythonConsole
+IPythonConsole.ipython_useSVG=True
+
 import io
 from PIL import Image
+from IPython.display import Image
 from io import StringIO
 import datamol as dm
 
@@ -76,7 +81,7 @@ type(mols)
 mols = list(mols)
 type(mols)
 
-image = Draw.MolsToGridImage(mols)
+image = Draw.MolsToGridImage(mols, returnPNG=True)
 image
 
 
@@ -89,7 +94,7 @@ image
 # bio = io.BytesIO(drawer.GetDrawingText())
 # Image.open(bio)
 
+# import io
+# f = io.BytesIO(received_data)
+# im = Image.open(f)
 
-
-mol = Chem.MolFromSmiles("CC(CCCC(C)(C)O)C1CCC2C1(CCCC2=CC=C3CC(CC(C3=C)O)O)C")
-mol
