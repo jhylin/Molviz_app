@@ -44,7 +44,8 @@ def server(input, output, session):
         mols = list(mols)
         mol = Chem.MolFromSmiles("CC(CCCC(C)(C)O)C1CCC2C1(CCCC2=CC=C3CC(CC(C3=C)O)O)C")
         Draw.MolsToGridImage(mol, returnPNG=True)
-        #Image(mols.getvalue())
+        # Check PNG display in PyShiny
+        # or display IPython.core.display.SVG object
         return image
 
 
