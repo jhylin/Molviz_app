@@ -1,3 +1,5 @@
+# App reading a dataframe and showing as a html table
+
 import pandas as pd
 import polars as pl
 from rdkit import Chem
@@ -15,11 +17,12 @@ def server(input, output, session):
     @output
     @render.table
     def table():
-        #infile = Path(__file__).parent / "test.csv"
         #df = pd.read_csv("df_ai.csv")
         df = pl.read_csv("df_ai.csv")
         df = df.to_pandas()
         df["mol"] = df["Smiles"].apply(lambda x: dm.to_mol(x))
+        # mols = df["mol"]
+        # image = dm.viz.to_image(mols)
         return df
 
 

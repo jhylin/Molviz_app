@@ -22,7 +22,10 @@ import polars as pl
 # Add RDKit
 from rdkit import Chem
 from rdkit.Chem import Draw
+from rdkit.Chem.Draw import rdMolDraw2D
 from rdkit.Chem.rdmolfiles import SmilesWriter, SmilesMolSupplier
+import io
+from PIL import Image
 from io import StringIO
 import datamol as dm
 
@@ -69,3 +72,24 @@ df["mol"] = df.Smiles.apply(Chem.MolFromSmiles)
 df
 mols = df["mol"]
 mols
+type(mols)
+mols = list(mols)
+type(mols)
+
+image = Draw.MolsToGridImage(mols)
+image
+
+
+
+# Trial example only
+# drawer = rdMolDraw2D.MolDraw2DCairo(500,180,200,180)
+# drawer.drawOptions().useBWAtomPalette()
+# drawer.DrawMolecules(mols)
+# drawer.FinishDrawing()
+# bio = io.BytesIO(drawer.GetDrawingText())
+# Image.open(bio)
+
+
+
+mol = Chem.MolFromSmiles("CC(CCCC(C)(C)O)C1CCC2C1(CCCC2=CC=C3CC(CC(C3=C)O)O)C")
+mol
