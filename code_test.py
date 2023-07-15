@@ -23,7 +23,7 @@ import polars as pl
 from rdkit import Chem
 from rdkit.Chem import Draw
 from rdkit.Chem.Draw import rdMolDraw2D, MolsToGridImage
-from rdkit.Chem.rdmolfiles import SmilesWriter, SmilesMolSupplier
+#from rdkit.Chem.rdmolfiles import SmilesWriter, SmilesMolSupplier
 
 from rdkit.Chem.Draw import IPythonConsole
 # Set below to False to return PNG 
@@ -70,7 +70,7 @@ import datamol as dm
     # return image
 
 
-
+# Code test:
 df = pl.read_csv("df_ai.csv")
 #df.head()
 df = df.to_pandas()
@@ -90,7 +90,8 @@ image
 
 
 # RDKit Cairo molecule drawer - **works to save PNG image file**
-# Saving 2D compound image as PNG - 500,180,200,180
+# Saving 2D compound image as PNG - default frame size: 500,180,200,180
+# Code below:
 # drawer = rdMolDraw2D.MolDraw2DCairo(2000,2000,300,300) 
 # drawer.drawOptions().useBWAtomPalette()
 # drawer.DrawMolecules(mols)
@@ -114,7 +115,11 @@ image
 # image_test = Image.open("anti-inf.png")
 # image_test.show()
 
-# All compound stacked together - check!
+#TODO:
+# All compound stacked together in PNG (?because >50 compounds) - check!
 
+# Try ui.output_image and @render.image from PyShiny
+# to show PNG image from file path - code example bookmarked
+# which hopefully will show 2D image of compounds in PyShiny
 
 
