@@ -46,27 +46,25 @@ def server(input, output, session):
         mols = list(mols)
 
         #img = Draw.MolsToGridImage(mols) 
-        # #returnPNG=True - Check PNG display in PyShiny
-        # or display IPython.core.display.SVG object
 
+        # --Testing MolDraw2DCairo
         # Saving 2D compound image as PNG
-        drawer = rdMolDraw2D.MolDraw2DCairo(500,180,200,180)
-        drawer.drawOptions().useBWAtomPalette()
-        drawer.DrawMolecules(mols)
-        drawer.FinishDrawing()
-        drawer.WriteDrawingText('anti-inf.png')
+        # drawer = rdMolDraw2D.MolDraw2DCairo(500,180,200,180)
+        # drawer.drawOptions().useBWAtomPalette()
+        # drawer.DrawMolecules(mols)
+        # drawer.FinishDrawing()
+        # drawer.WriteDrawingText('anti-inf.png')
 
         # Open the PNG file to show image
-        image_test = Image.open("anti-inf.png")
-        image_test.show()
+        # image_test = Image.open("anti-inf.png")
+        # image_test.show()
 
-
-        # Example:
-        # img.save('images/cdk2_molgrid.o.png')   
-
-        # Example:
-        # image = Image.open("aman.png")
-        # image.show()
+        # --Testing MolsToImage
+        img_test = Draw.MolsToImage(mols)
+        img_test
+        img_test.save("antiinf.png")
+        image_new = Image.open("anti-inf.png")
+        image_new.show()
 
         return image
 

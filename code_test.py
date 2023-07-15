@@ -1,17 +1,4 @@
-# Example SMILES
-# Canonical SMILES of calcitriol - CC(CCCC(C)(C)O)C1CCC2C1(CCCC2=CC=C3CC(CC(C3=C)O)O)C
-# Canonical SMILES of ubiquinol - CC1=C(C(=C(C(=C1O)OC)OC)O)CC=C(C)CCC=C(C)CCC=C(C)CCC=C(C)CCC=C(C)CCC=C(C)CCC=C(C)CCC=C(C)CCC=C(C)CCC=C(C)C
-
-# smiles = """CC(CCCC(C)(C)O)C1CCC2C1(CCCC2=CC=C3CC(CC(C3=C)O)O)C, 
-#             CC1=C(C(=C(C(=C1O)OC)OC)O)CC=C(C)CCC=C(C)CCC=C(C)CCC=C(C)CCC=C(C)CCC=C(C)CCC=C(C)CCC=C(C)CCC=C(C)CCC=C(C)C,
-#             C(CC(=O)N)C(C(=O)O)N
-# """
-# sm = StringIO(smiles)
-# df = pd.read_csv(sm, names = ["SMILES", "Names"])
-# df["mol"] = df.SMILES.apply(Chem.MolFromSmiles)
-
-
-
+# --Import libraries
 # Import pandas
 import pandas as pd
 import polars as pl
@@ -38,7 +25,7 @@ from io import StringIO
 import datamol as dm
 
 
-# ***Specify data source***
+# --Some code ideas:
 # Reading from .smi file
 # # Read in a simple list of SMILES from .smi file
 # suppl = SmilesMolSupplier("cefe.smi")
@@ -70,12 +57,15 @@ import datamol as dm
     # return image
 
 
-# Code test:
+# --Code test:
+# Reading data from .csv file
 df = pl.read_csv("df_ai.csv")
 #df.head()
 df = df.to_pandas()
 #df.head()
 #type(df)
+
+# Generate RDKit molecules
 df["mol"] = df.Smiles.apply(Chem.MolFromSmiles)
 df
 mols = df["mol"]
@@ -84,12 +74,27 @@ type(mols)
 mols = list(mols)
 type(mols)
 
-image = Draw.MolsToGridImage(mols, molsPerRow=4, returnPNG=True)
-image
+# --Testing MolsToGridImage - gives IPython.core.display.Image object
+# image = Draw.MolsToGridImage(mols, molsPerRow=4, returnPNG=True)
+# image
+
+# --Testing MolsToImage - saving molecules as PNG file & open PNG directly
+# **Shorter code for simple mols to image function only**
+img_test = Draw.MolsToImage(mols)
+img_test
+img_test.save("antiinf.png")
+image_new = Image.open("anti-inf.png")
+image_new.show()
 
 
+# --Testing MolToFile
+# Only can save a single compound as PNG
+# Draw.MolToFile(mols[1], "anti.png")
 
-# RDKit Cairo molecule drawer - **works to save PNG image file**
+
+# --RDKit Cairo molecule drawer - saving molecules as PNG image file
+# **Longer code but with other functions e.g. saving PNG data as string and others**
+# All compound stacked on top of each other in PNG (?because >50 compounds)
 # Saving 2D compound image as PNG - default frame size: 500,180,200,180
 # Code below:
 # drawer = rdMolDraw2D.MolDraw2DCairo(2000,2000,300,300) 
@@ -98,7 +103,12 @@ image
 # drawer.FinishDrawing()
 # drawer.WriteDrawingText('anti-inf.png')
 
-# RDKit SVG molecule drawer - produces a long string of SVG object!
+# Open the PNG file to show image
+# image_test = Image.open("anti-inf.png")
+# image_test.show()
+
+
+# --RDKit SVG molecule drawer - produces a long string of SVG data
 # drawer = rdMolDraw2D.MolDraw2DSVG(2000,2000,300,300) 
 # drawer.drawOptions().useBWAtomPalette()
 # drawer.DrawMolecules(mols)
@@ -106,18 +116,14 @@ image
 # drawer.GetDrawingText()
 
 
-# Example of opening byte array data
+# --Example of opening byte array data
 # import io
 # f = io.BytesIO(received_data)
 # im = Image.open(f)
 
-# Open the PNG file to show image
-# image_test = Image.open("anti-inf.png")
-# image_test.show()
 
-#TODO:
-# All compound stacked together in PNG (?because >50 compounds) - check!
 
+# --TODO:
 # Try ui.output_image and @render.image from PyShiny
 # to show PNG image from file path - code example bookmarked
 # which hopefully will show 2D image of compounds in PyShiny

@@ -1,3 +1,17 @@
+# --Example SMILES
+# Canonical SMILES of calcitriol - CC(CCCC(C)(C)O)C1CCC2C1(CCCC2=CC=C3CC(CC(C3=C)O)O)C
+# Canonical SMILES of ubiquinol - CC1=C(C(=C(C(=C1O)OC)OC)O)CC=C(C)CCC=C(C)CCC=C(C)CCC=C(C)CCC=C(C)CCC=C(C)CCC=C(C)CCC=C(C)CCC=C(C)CCC=C(C)C
+
+# --Old example code:
+# smiles = """CC(CCCC(C)(C)O)C1CCC2C1(CCCC2=CC=C3CC(CC(C3=C)O)O)C, 
+#             CC1=C(C(=C(C(=C1O)OC)OC)O)CC=C(C)CCC=C(C)CCC=C(C)CCC=C(C)CCC=C(C)CCC=C(C)CCC=C(C)CCC=C(C)CCC=C(C)CCC=C(C)C,
+#             C(CC(=O)N)C(C(=O)O)N
+# """
+# sm = StringIO(smiles)
+# df = pd.read_csv(sm, names = ["SMILES", "Names"])
+# df["mol"] = df.SMILES.apply(Chem.MolFromSmiles)
+
+
 # ***Import all libraries or packages needed***
 # Import shiny ui, app
 from shiny import *

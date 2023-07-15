@@ -1,4 +1,4 @@
-# App reading a dataframe and showing as a html table
+# App reading a dataframe and showing dataframe as a html table
 
 import pandas as pd
 import polars as pl
