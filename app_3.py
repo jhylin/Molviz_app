@@ -5,7 +5,8 @@ from rdkit.Chem import Draw
 from rdkit.Chem.Draw import IPythonConsole
 #from rdkit.Chem.rdmolfiles import SmilesWriter, SmilesMolSupplier
 from rdkit.Chem.Draw import rdMolDraw2D
-IPythonConsole.ipython_useSVG=True
+# Set below to false to show PNG 
+IPythonConsole.ipython_useSVG=False
 
 import io
 
@@ -16,7 +17,7 @@ import datamol as dm
 from shiny import App, render, ui
 
 app_ui = ui.page_fluid(
-    ui.output_image("table"),
+    ui.output_image("image"),
 )
 
 
@@ -43,14 +44,27 @@ def server(input, output, session):
         df["mol"] = df["Smiles"].apply(lambda x: dm.to_mol(x))
         mols = df["mol"]
         mols = list(mols)
-        #mol = Chem.MolFromSmiles("CC(CCCC(C)(C)O)C1CCC2C1(CCCC2=CC=C3CC(CC(C3=C)O)O)C")
-        img = Draw.MolsToGridImage(mols) #returnPNG=True - Check PNG display in PyShiny
+
+        #img = Draw.MolsToGridImage(mols) 
+        # #returnPNG=True - Check PNG display in PyShiny
         # or display IPython.core.display.SVG object
-        img.save("anti-inf.png")
-        #img.save('images/cdk2_molgrid.o.png')   
+
+        # Saving 2D compound image as PNG
+        drawer = rdMolDraw2D.MolDraw2DCairo(500,180,200,180)
+        drawer.drawOptions().useBWAtomPalette()
+        drawer.DrawMolecules(mols)
+        drawer.FinishDrawing()
+        drawer.WriteDrawingText('anti-inf.png')
+
+        # Open the PNG file to show image
         image_test = Image.open("anti-inf.png")
         image_test.show()
 
+
+        # Example:
+        # img.save('images/cdk2_molgrid.o.png')   
+
+        # Example:
         # image = Image.open("aman.png")
         # image.show()
 

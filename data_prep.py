@@ -28,6 +28,8 @@ from rdkit.Chem.rdmolfiles import SmilesWriter, SmilesMolSupplier
 from rdkit.Chem.Draw import IPythonConsole
 # Set below to False to return PNG 
 IPythonConsole.ipython_useSVG=False
+# Set below to True to return SVG
+#IPythonConsole.ipython_useSVG=True
 
 import io
 from PIL import Image
@@ -82,30 +84,37 @@ type(mols)
 mols = list(mols)
 type(mols)
 
-image = Draw.MolsToGridImage(mols, returnPNG=True)
+image = Draw.MolsToGridImage(mols, molsPerRow=4, returnPNG=True)
 image
 
 
 
-#image.save("anti-inf.png")
-#img.save('images/cdk2_molgrid.o.png')   
-#image_test = Image.open("anti-inf.png")
-#image_test.show()
+# RDKit Cairo molecule drawer - **works to save PNG image file**
+# Saving 2D compound image as PNG - 500,180,200,180
+# drawer = rdMolDraw2D.MolDraw2DCairo(2000,2000,300,300) 
+# drawer.drawOptions().useBWAtomPalette()
+# drawer.DrawMolecules(mols)
+# drawer.FinishDrawing()
+# drawer.WriteDrawingText('anti-inf.png')
 
-# Saving 2D compound image as PNG
-drawer = rdMolDraw2D.MolDraw2DCairo(500,180,200,180)
-drawer.drawOptions().useBWAtomPalette()
-drawer.DrawMolecules(mols)
-drawer.FinishDrawing()
-drawer.WriteDrawingText('anti-inf.png')
-# bio = io.BytesIO(drawer.GetDrawingText())
-# Image.open(bio)
+# RDKit SVG molecule drawer - produces a long string of SVG object!
+# drawer = rdMolDraw2D.MolDraw2DSVG(2000,2000,300,300) 
+# drawer.drawOptions().useBWAtomPalette()
+# drawer.DrawMolecules(mols)
+# drawer.FinishDrawing()
+# drawer.GetDrawingText()
 
-# Open the PNG file to show image
-image_test = Image.open("anti-inf.png")
-image_test.show()
 
+# Example of opening byte array data
 # import io
 # f = io.BytesIO(received_data)
 # im = Image.open(f)
+
+# Open the PNG file to show image
+# image_test = Image.open("anti-inf.png")
+# image_test.show()
+
+# All compound stacked together - check!
+
+
 
