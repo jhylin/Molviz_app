@@ -83,12 +83,19 @@ type(mols)
 img_test = Draw.MolsToImage(mols)
 img_test
 img_test.save("antiinf.png")
+# Potentially replacing below code with the PyShiny example
+# of using file path to open PNG image
 image_new = Image.open("anti-inf.png")
 image_new.show()
 
+# --TODO:
+# Try ui.output_image and @render.image from PyShiny
+# to show PNG image from file path - code example bookmarked
+# which hopefully will show 2D image of compounds in PyShiny
+
 
 # --Testing MolToFile
-# Only can save a single compound as PNG
+# Only can save a single compound (specify index position) as PNG
 # Draw.MolToFile(mols[1], "anti.png")
 
 
@@ -120,12 +127,5 @@ image_new.show()
 # import io
 # f = io.BytesIO(received_data)
 # im = Image.open(f)
-
-
-
-# --TODO:
-# Try ui.output_image and @render.image from PyShiny
-# to show PNG image from file path - code example bookmarked
-# which hopefully will show 2D image of compounds in PyShiny
 
 

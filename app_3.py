@@ -24,6 +24,7 @@ app_ui = ui.page_fluid(
 def server(input, output, session):
     @output
     @render.image
+
     # @render.table
     # def table():
     #     #df = pd.read_csv("df_ai.csv")
@@ -34,7 +35,6 @@ def server(input, output, session):
     #     mols = list(mols)
     #     # image = dm.viz.to_image(mols)
     #     Draw.MolsToGridImage(mols)
-
     #     return table
 
     def image():
@@ -63,8 +63,15 @@ def server(input, output, session):
         img_test = Draw.MolsToImage(mols)
         img_test
         img_test.save("antiinf.png")
+        # Potentially replacing below code with the PyShiny example
+        # of using file path to open PNG image
         image_new = Image.open("anti-inf.png")
         image_new.show()
+
+        # --TODO:
+        # Try ui.output_image and @render.image from PyShiny
+        # to show PNG image from file path - code example bookmarked
+        # which hopefully will show 2D image of compounds in PyShiny
 
         return image
 
