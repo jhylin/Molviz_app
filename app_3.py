@@ -8,8 +8,9 @@ from rdkit.Chem.Draw import rdMolDraw2D
 IPythonConsole.ipython_useSVG=True
 
 import io
+
 from PIL import Image
-from IPython.display import Image
+# from IPython.display import Image
 
 import datamol as dm
 from shiny import App, render, ui
@@ -43,9 +44,16 @@ def server(input, output, session):
         mols = df["mol"]
         mols = list(mols)
         #mol = Chem.MolFromSmiles("CC(CCCC(C)(C)O)C1CCC2C1(CCCC2=CC=C3CC(CC(C3=C)O)O)C")
-        Draw.MolsToGridImage(mols, returnPNG=True)
-        # Check PNG display in PyShiny
+        img = Draw.MolsToGridImage(mols) #returnPNG=True - Check PNG display in PyShiny
         # or display IPython.core.display.SVG object
+        img.save("anti-inf.png")
+        #img.save('images/cdk2_molgrid.o.png')   
+        image_test = Image.open("anti-inf.png")
+        image_test.show()
+
+        # image = Image.open("aman.png")
+        # image.show()
+
         return image
 
 

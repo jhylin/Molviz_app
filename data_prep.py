@@ -26,11 +26,12 @@ from rdkit.Chem.Draw import rdMolDraw2D, MolsToGridImage
 from rdkit.Chem.rdmolfiles import SmilesWriter, SmilesMolSupplier
 
 from rdkit.Chem.Draw import IPythonConsole
-IPythonConsole.ipython_useSVG=True
+# Set below to False to return PNG 
+IPythonConsole.ipython_useSVG=False
 
 import io
 from PIL import Image
-from IPython.display import Image
+#from IPython.display import Image
 from io import StringIO
 import datamol as dm
 
@@ -86,13 +87,23 @@ image
 
 
 
-# Trial example only
-# drawer = rdMolDraw2D.MolDraw2DCairo(500,180,200,180)
-# drawer.drawOptions().useBWAtomPalette()
-# drawer.DrawMolecules(mols)
-# drawer.FinishDrawing()
+#image.save("anti-inf.png")
+#img.save('images/cdk2_molgrid.o.png')   
+#image_test = Image.open("anti-inf.png")
+#image_test.show()
+
+# Saving 2D compound image as PNG
+drawer = rdMolDraw2D.MolDraw2DCairo(500,180,200,180)
+drawer.drawOptions().useBWAtomPalette()
+drawer.DrawMolecules(mols)
+drawer.FinishDrawing()
+drawer.WriteDrawingText('anti-inf.png')
 # bio = io.BytesIO(drawer.GetDrawingText())
 # Image.open(bio)
+
+# Open the PNG file to show image
+image_test = Image.open("anti-inf.png")
+image_test.show()
 
 # import io
 # f = io.BytesIO(received_data)
