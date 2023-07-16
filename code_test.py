@@ -1,10 +1,7 @@
 # --Import libraries
-# Import pandas
+# Import Pandas
 import pandas as pd
 import polars as pl
-
-#import ipywidgets as ipy
-#from IPython.display import HTML, IFrame, display
 
 # Add RDKit
 from rdkit import Chem
@@ -12,8 +9,9 @@ from rdkit.Chem import Draw
 from rdkit.Chem.Draw import rdMolDraw2D, MolsToGridImage
 #from rdkit.Chem.rdmolfiles import SmilesWriter, SmilesMolSupplier
 
+# IPythonConsole for Jupyter notebook environment only
 from rdkit.Chem.Draw import IPythonConsole
-# Set below to False to return PNG 
+# Set below to false to show PNG 
 IPythonConsole.ipython_useSVG=False
 # Set below to True to return SVG
 #IPythonConsole.ipython_useSVG=True
@@ -65,7 +63,8 @@ df = df.to_pandas()
 #df.head()
 #type(df)
 
-# Generate RDKit molecules
+
+# Generate RDKit molecules as a column from dataframe
 df["mol"] = df.Smiles.apply(Chem.MolFromSmiles)
 df
 mols = df["mol"]
@@ -74,35 +73,35 @@ type(mols)
 mols = list(mols)
 type(mols)
 
+
 # --Testing MolsToGridImage - gives IPython.core.display.Image object
+# which means this'll likely only work for Jupyter notebook environment only
 # image = Draw.MolsToGridImage(mols, molsPerRow=4, returnPNG=True)
 # image
 
-# --Testing MolsToImage - saving molecules as PNG file & open PNG directly
+
+# --Testing MolsToImage - saving molecules as PNG file & open PNG file directly
 # **Shorter code for simple mols to image function only**
-img_test = Draw.MolsToImage(mols)
-img_test
-img_test.save("antiinf.png")
+# img_test = Draw.MolsToImage(mols)
+# img_test
+# img_test.save("antiinf.png")
 # Potentially replacing below code with the PyShiny example
 # of using file path to open PNG image
-image_new = Image.open("anti-inf.png")
-image_new.show()
-
-# --TODO:
-# Try ui.output_image and @render.image from PyShiny
-# to show PNG image from file path - code example bookmarked
-# which hopefully will show 2D image of compounds in PyShiny
+# image_new = Image.open("anti-inf.png")
+# image_new.show()
 
 
-# --Testing MolToFile
-# Only can save a single compound (specify index position) as PNG
-# Draw.MolToFile(mols[1], "anti.png")
+# --Testing MolToFile 
+# TODO:
+# **?Write a function to allow input selection to save say 2 or more molecules in 1 file**
+# Can only save a single compound (specify index position) as PNG file
+#Draw.MolToFile(mols[2], "anti.png")
 
 
 # --RDKit Cairo molecule drawer - saving molecules as PNG image file
 # **Longer code but with other functions e.g. saving PNG data as string and others**
-# All compound stacked on top of each other in PNG (?because >50 compounds)
-# Saving 2D compound image as PNG - default frame size: 500,180,200,180
+# Compounds stacked on top of each other in PNG initially (change the frame size parameters)
+# Saving 2D compound image as PNG - sample frame size: 500,180,200,180
 # Code below:
 # drawer = rdMolDraw2D.MolDraw2DCairo(2000,2000,300,300) 
 # drawer.drawOptions().useBWAtomPalette()
