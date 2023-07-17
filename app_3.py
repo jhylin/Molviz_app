@@ -3,7 +3,7 @@ import pandas as pd
 import polars as pl
 from rdkit import Chem
 from rdkit.Chem import Draw
-from rdkit.Chem.Draw import IPythonConsole
+#from rdkit.Chem.Draw import IPythonConsole
 #from rdkit.Chem.rdmolfiles import SmilesWriter, SmilesMolSupplier
 from rdkit.Chem.Draw import rdMolDraw2D
 
@@ -22,26 +22,14 @@ from shiny.types import ImgData
 
 # Input--- **work-in-progress**
 app_ui = ui.page_fluid(
-    ui.output_image("image")
+    ui.output_image("image"),
+    #ui.output_table("table")
 )
 
 # Output---
 def server(input, output, session):
     @output
     @render.image
-
-    # @render.table
-    # def table():
-    #     #df = pd.read_csv("df_ai.csv")
-    #     df = pl.read_csv("df_ai.csv")
-    #     df = df.to_pandas()
-    #     df["mol"] = df["Smiles"].apply(lambda x: dm.to_mol(x))
-    #     mols = df["mol"]
-    #     mols = list(mols)
-    #     # image = dm.viz.to_image(mols)
-    #     Draw.MolsToGridImage(mols)
-    #     return table
-
     def image():
         # Pandas library renders df columns in strange data types
         # So using Polars instead then convert to Pandas df
@@ -82,14 +70,24 @@ def server(input, output, session):
         # then show image of selection of molecules (linking to input selection?)
 
         # **Function to allow input selection to save 2 or more molecules in 1 file**
-        # Can only save a single compound (specify index position) as PNG file
-        #def select_molecule(i):
+        # MolToFile() - only saving a single compound as PNG file (via index position) 
+        
         # --Testing MolToFile 
         Draw.MolToFile(mols[0], "af1.png")
         Draw.MolToFile(mols[1], "af2.png")
 
-        # Consider using Image.paste() to place two pngs together in one image for comparison
-        
+        # --Using PIL/Pillow to manipulate images e.g. 2 images side-by-side
+        img1 = Image.open("af1.png")
+        img2 = Image.open("af2.png")
+
+        # Create a blank image template - (width, height)
+        blank_image = Image.new("RGB", (600, 300))
+
+        # Paste img1 & img2 together
+        blank_image.paste(img1, (0, 0))
+        blank_image.paste(img2, (300, 0))
+        # Save combined img1 & img2 as a new PNG file
+        blank_image.save("merged.png")
 
 
         # --Use local file path to import PNG image file
@@ -101,10 +99,19 @@ def server(input, output, session):
 
         # Showing a single molecule
         dir = Path(__file__).resolve().parent
-        img: ImgData = {"src": str(dir / "af1.png")} 
+        img: ImgData = {"src": str(dir / "merged.png")} 
         return img 
 
         #return image
+
+        # @render.table
+        # def table():
+        #     #df = pd.read_csv("df_ai.csv")
+        #     df = pl.read_csv("df_ai.csv")
+        #     df = df.to_pandas()
+        #     return df
+
+        
 
 
 app = App(app_ui, server)

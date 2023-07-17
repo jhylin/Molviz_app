@@ -96,6 +96,21 @@ type(mols)
 # **?Write a function to allow input selection to save say 2 or more molecules in 1 file**
 # Can only save a single compound (specify index position) as PNG file
 #Draw.MolToFile(mols[2], "anti.png")
+Draw.MolToFile(mols[0], "af1.png")
+Draw.MolToFile(mols[1], "af2.png")
+
+# --Using PIL/Pillow to manipulate images
+img1 = Image.open("af1.png")
+img2 = Image.open("af2.png")
+
+# img1 = img1.convert("RGBA")
+# img2 = img2.convert("RGBA")
+
+blank_image = Image.new("RGB", (600, 300))
+
+blank_image.paste(img1, (0, 0))
+blank_image.paste(img2, (300, 0))
+blank_image.save("merged.png")
 
 
 # --RDKit Cairo molecule drawer - saving molecules as PNG image file
