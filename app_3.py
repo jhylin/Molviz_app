@@ -57,6 +57,7 @@ def server(input, output, session):
         # --Testing MolDraw2DCairo
         # Saving 2D compound image as PNG
         # drawer = rdMolDraw2D.MolDraw2DCairo(2000,2000,300,300)
+        # Change to black & white
         # drawer.drawOptions().useBWAtomPalette()
         # drawer.DrawMolecules(mols)
         # drawer.FinishDrawing()
@@ -67,8 +68,8 @@ def server(input, output, session):
         # image_test.show()
 
         # --Testing MolsToImage
-        # Image of molecules all aligned horizontally (not in grid/table format)
-        # img_test = Draw.MolsToImage(mols)
+        #Image of molecules all aligned horizontally (not in grid/table format)
+        # img_test = Draw.MolsToImage(mols, fitImage = True)
         # img_test
         # img_test.save("antiinf.png")
         # image_new = Image.open("antiinf.png")
@@ -82,23 +83,26 @@ def server(input, output, session):
 
         # **Function to allow input selection to save 2 or more molecules in 1 file**
         # Can only save a single compound (specify index position) as PNG file
-        def select_molecule(i):
-            # --Testing MolToFile 
-            Draw.MolToFile(mols[i], "name.png")
+        #def select_molecule(i):
+        # --Testing MolToFile 
+        Draw.MolToFile(mols[0], "af1.png")
+        Draw.MolToFile(mols[1], "af2.png")
+
+        # Consider using Image.paste() to place two pngs together in one image for comparison
+        
 
 
         # --Use local file path to import PNG image file
 
         # Showing a list of molecules
         # dir = Path(__file__).resolve().parent
-        # img: ImgData = {"src": str(dir / "anti.png"), "width": "2350px", "height": "2350px"}
+        # img: ImgData = {"src": str(dir / "anti-inf.png"), "width": "2350px", "height": "2350px"}
         # return img
 
         # Showing a single molecule
         dir = Path(__file__).resolve().parent
-        img: ImgData = {"src": str(dir / "anti.png")}
-        return img
-
+        img: ImgData = {"src": str(dir / "af1.png")} 
+        return img 
 
         #return image
 
