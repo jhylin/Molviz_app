@@ -96,22 +96,43 @@ type(mols)
 # TODO:
 # **?Write a function to allow input selection to save say 2 or more molecules in 1 file**
 # Can only save a single compound (specify index position) as PNG file
-#Draw.MolToFile(mols[2], "anti.png")
-Draw.MolToFile(mols[0], "af1.png")
-Draw.MolToFile(mols[1], "af2.png")
 
-# --Using PIL/Pillow to manipulate images
-img1 = Image.open("af1.png")
-img2 = Image.open("af2.png")
+# Draft function v.1 - saving specified compound as PNG file:
+# i = index number for each compound
+# file_name = name of PNG file
 
-# img1 = img1.convert("RGBA")
-# img2 = img2.convert("RGBA")
+# Reference function from SO:
+# class Thing:
+#   def __init__(self,a):
+#     self.a = a
+# def dosomething(ref)
+#   ref.a += 1
 
-blank_image = Image.new("RGB", (600, 300))
+# t = Thing(3)
+# dosomething(t)
+# print("T is now",t.a)
 
-blank_image.paste(img1, (0, 0))
-blank_image.paste(img2, (300, 0))
-blank_image.save("merged.png")
+# TODO: Wrong data type for i for now (recognised as str, not integer)
+def select_molecules(i):
+    for i in df:
+        # smiles = SmilesWriter(f"{file_name}.smi")
+        Draw.MolToFile(mols[i])
+
+select_molecules(4)
+
+# #Draw.MolToFile(mols[2], "anti.png")
+# Draw.MolToFile(mols[0], "af1.png")
+# Draw.MolToFile(mols[1], "af2.png")
+
+# # --Using PIL/Pillow to manipulate images
+# img1 = Image.open("af1.png")
+# img2 = Image.open("af2.png")
+
+# blank_image = Image.new("RGB", (600, 300))
+
+# blank_image.paste(img1, (0, 0))
+# blank_image.paste(img2, (300, 0))
+# blank_image.save("merged.png")
 
 
 # --RDKit Cairo molecule drawer - saving molecules as PNG image file
@@ -144,7 +165,7 @@ blank_image.save("merged.png")
 # im = Image.open(f)
 
 
-# Trialled FrameToGridImage() - produces IPython.core.display.Image object
+# --Trialled FrameToGridImage() - produces IPython.core.display.Image object
 # rdkit.Chem.PandasTools.FrameToGridImage(frame, column='ROMol', legendsCol=None, **kwargs)
 # df
 # Chem.PandasTools.FrameToGridImage(df, column = "mol")

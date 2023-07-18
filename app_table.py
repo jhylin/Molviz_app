@@ -1,19 +1,21 @@
-# App reading a dataframe and showing dataframe as a html table
-# TODO: Test out ITables to allow interactive viewing and searching using keywords
+# App reading and showing a dataframe as a HTML table
 
+# Import libraries---
 import pandas as pd
 import polars as pl
 from rdkit import Chem
 from rdkit.Chem import Draw
-from rdkit.Chem.rdmolfiles import SmilesWriter, SmilesMolSupplier
 import datamol as dm
 from shiny import App, render, ui
 
+
+# Input---
 app_ui = ui.page_fluid(
-    ui.output_table("table"),
+    ui.output_table("table")
 )
 
 
+# Output---
 def server(input, output, session):
     @output
     @render.table
@@ -22,8 +24,6 @@ def server(input, output, session):
         df = pl.read_csv("df_ai.csv")
         df = df.to_pandas()
         df["mol"] = df["Smiles"].apply(lambda x: dm.to_mol(x))
-        # mols = df["mol"]
-        # image = dm.viz.to_image(mols)
         return df
 
 

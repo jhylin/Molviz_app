@@ -1,5 +1,5 @@
 # App showing 2D images of small molecules of interests
-# Rough plan of adding structure alignment/substructure highlighting
+# Rough plan of adding structure alignment/substructure highlighting once input determined
 
 # Import libraries---
 import pandas as pd
@@ -13,7 +13,7 @@ from rdkit.Chem.Draw import rdMolDraw2D
 import datamol as dm
 
 from pathlib import Path
-import io
+#import io
 from PIL import Image
 # IPython console similar to Jupyter notebook
 # from IPython.display import Image
@@ -56,6 +56,7 @@ def server(input, output, session):
         # Open the PNG file to show image (for MacOS - opens file using Preview)
         # image_test = Image.open("anti-inf.png")
         # image_test.show()
+        # For image of list of molecules: ?improve image resolution (blurry at the moment)
 
         # --Testing MolsToImage
         #Image of molecules all aligned horizontally (not in grid/table format)
@@ -66,13 +67,16 @@ def server(input, output, session):
         # image_new.show()
 
         # --TODO:
-        # For image of list of molecules: ?improve image resolution (blurry at the moment)
-        
-        # Trial single molecule image, but write function to add e.g. 2 or 3 molecules as PNG file
-        # then show image of selection of molecules (linking to input selection?)
+        # Write function to link MolToFile() to input selection
+        # MolToFile() - only saving a single compound as PNG file (via index position)
 
-        # **Function to allow input selection to save 2 or more molecules in 1 file**
-        # MolToFile() - only saving a single compound as PNG file (via index position) 
+        # Draft function v.1 - saving specified compound as PNG file:
+        # i = index number for each compound
+        # file_name = name of PNG file
+        # def select_molecules(i, file_name):
+        #     for i in mols:
+        #         # smiles = SmilesWriter(f"{file_name}.smi")
+        #         Draw.MolToFile(mols[i], f"{file_name}.png")
         
         # --Testing MolToFile 
         Draw.MolToFile(mols[0], "af1.png")
@@ -80,7 +84,7 @@ def server(input, output, session):
         Draw.MolToFile(mols[2], "af3.png")
         Draw.MolToFile(mols[3], "af4.png")
 
-        # --Using PIL/Pillow to manipulate images e.g. 2 images side-by-side
+        # --Using PIL/Pillow to manipulate images
         img1 = Image.open("af1.png")
         img2 = Image.open("af2.png")
         img3 = Image.open("af3.png")
@@ -94,26 +98,24 @@ def server(input, output, session):
         blank_image.paste(img2, (300, 0))
         blank_image.paste(img3, (0, 300))
         blank_image.paste(img4, (300, 300))
+
         # Save combined img1 & img2 as a new PNG file
         blank_image.save("merged.png")
 
 
         # --Use local file path to import PNG image file
-
         # Showing a list of molecules
         # dir = Path(__file__).resolve().parent
         # img: ImgData = {"src": str(dir / "anti-inf.png"), "width": "2350px", "height": "2350px"}
         # return img
 
-        # Showing a single molecule
+        # Showing image from a saved PNG file
         dir = Path(__file__).resolve().parent
         img: ImgData = {"src": str(dir / "merged.png")} 
         return img 
 
         #return image
 
-
-        
 
 
 app = App(app_ui, server)
