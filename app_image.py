@@ -22,8 +22,7 @@ from shiny.types import ImgData
 
 # Input--- **work-in-progress**
 app_ui = ui.page_fluid(
-    ui.output_image("image"),
-    #ui.output_table("table")
+    ui.output_image("image")
 )
 
 # Output---
@@ -104,12 +103,6 @@ def server(input, output, session):
 
         #return image
 
-        # @render.table
-        # def table():
-        #     #df = pd.read_csv("df_ai.csv")
-        #     df = pl.read_csv("df_ai.csv")
-        #     df = df.to_pandas()
-        #     return df
 
         
 

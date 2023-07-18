@@ -6,6 +6,7 @@ import polars as pl
 # Add RDKit
 from rdkit import Chem
 from rdkit.Chem import Draw
+from rdkit.Chem import PandasTools
 from rdkit.Chem.Draw import rdMolDraw2D, MolsToGridImage
 #from rdkit.Chem.rdmolfiles import SmilesWriter, SmilesMolSupplier
 
@@ -143,3 +144,5 @@ blank_image.save("merged.png")
 # im = Image.open(f)
 
 
+# TODO: Trial FrameToGridImage()
+# rdkit.Chem.PandasTools.FrameToGridImage(frame, column='ROMol', legendsCol=None, **kwargs)
