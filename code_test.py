@@ -144,5 +144,7 @@ blank_image.save("merged.png")
 # im = Image.open(f)
 
 
-# TODO: Trial FrameToGridImage()
+# Trialled FrameToGridImage() - produces IPython.core.display.Image object
 # rdkit.Chem.PandasTools.FrameToGridImage(frame, column='ROMol', legendsCol=None, **kwargs)
+# df
+# Chem.PandasTools.FrameToGridImage(df, column = "mol")
