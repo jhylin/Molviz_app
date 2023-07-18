@@ -1,3 +1,6 @@
+# App showing 2D images of small molecules of interests
+# Rough plan of adding structure alignment/substructure highlighting
+
 # Import libraries---
 import pandas as pd
 import polars as pl
@@ -74,17 +77,23 @@ def server(input, output, session):
         # --Testing MolToFile 
         Draw.MolToFile(mols[0], "af1.png")
         Draw.MolToFile(mols[1], "af2.png")
+        Draw.MolToFile(mols[2], "af3.png")
+        Draw.MolToFile(mols[3], "af4.png")
 
         # --Using PIL/Pillow to manipulate images e.g. 2 images side-by-side
         img1 = Image.open("af1.png")
         img2 = Image.open("af2.png")
+        img3 = Image.open("af3.png")
+        img4 = Image.open("af4.png")
 
         # Create a blank image template - (width, height)
-        blank_image = Image.new("RGB", (600, 300))
+        blank_image = Image.new("RGB", (600, 600))
 
-        # Paste img1 & img2 together
+        # Paste img1 to img4 together in a grid (top left, right & bottom left, right)
         blank_image.paste(img1, (0, 0))
         blank_image.paste(img2, (300, 0))
+        blank_image.paste(img3, (0, 300))
+        blank_image.paste(img4, (300, 300))
         # Save combined img1 & img2 as a new PNG file
         blank_image.save("merged.png")
 

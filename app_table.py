@@ -1,4 +1,5 @@
 # App reading a dataframe and showing dataframe as a html table
+# TODO: Test out ITables to allow interactive viewing and searching using keywords
 
 import pandas as pd
 import polars as pl
