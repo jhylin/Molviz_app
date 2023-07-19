@@ -4,9 +4,9 @@
 # Import libraries---
 import pandas as pd
 import polars as pl
-from rdkit import Chem
-from rdkit.Chem import Draw
-import datamol as dm
+# from rdkit import Chem
+# from rdkit.Chem import Draw
+# import datamol as dm
 from shiny import App, render, ui
 from itables.shiny import DT
 
@@ -14,12 +14,11 @@ from itables.shiny import DT
 # Data source---
 df = pl.read_csv("df_ai.csv")
 df = df.to_pandas()
-#df["mol"] = df["Smiles"].apply(lambda x: dm.to_mol(x))
+df = df.set_index(["Name"])
 
 
 # Input---
 app_ui = ui.page_fluid(
-    #ui.output_table("table"),
     ui.page_fluid(ui.HTML(DT(df)))
 )
 

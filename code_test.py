@@ -73,7 +73,8 @@ mols
 type(mols)
 mols = list(mols)
 type(mols)
-
+df.set_index(["Name"])
+df
 
 # --Testing MolsToGridImage - gives IPython.core.display.Image object
 # which means this'll likely only work for Jupyter notebook environment only
@@ -169,3 +170,5 @@ select_molecules(4)
 # rdkit.Chem.PandasTools.FrameToGridImage(frame, column='ROMol', legendsCol=None, **kwargs)
 # df
 # Chem.PandasTools.FrameToGridImage(df, column = "mol")
+
+

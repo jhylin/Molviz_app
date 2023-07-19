@@ -40,6 +40,7 @@ def server(input, output, session):
         df["mol"] = df["Smiles"].apply(lambda x: dm.to_mol(x))
         mols = df["mol"]
         mols = list(mols)
+        
 
         # MolsToGridImage() works in Jupyter notebook only (returns IPython.core.display.Image object)
         #img = Draw.MolsToGridImage(mols) 
