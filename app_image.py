@@ -37,7 +37,7 @@ app_ui = ui.page_fluid(
     ui.input_numeric("mol", "Molecule index:", 0, min=0, max=143),
     ui.input_text("filename", "File name of PNG file:", "Please enter here"),
     ui.output_image("image")
-    # **Need to add a reactive action button e.g. "Confirm" 
+    # TODO: **Need to add a reactive action button e.g. "Confirm" 
     # to trigger/prompt displaying image**
 )
 
@@ -116,7 +116,7 @@ def server(input, output, session):
         # img: ImgData = {"src": str(dir / "anti-inf.png"), "width": "2350px", "height": "2350px"}
         # return img
 
-        # **Not showing up in app yet!**
+        # TODO: **Not showing up in app yet!** ?to add reactive effect
         # Showing image from the saved PNG file
         dir = Path(__file__).resolve().parent
         img: ImgData = {"src": str(dir / f"{input.filename()}.png")} 
