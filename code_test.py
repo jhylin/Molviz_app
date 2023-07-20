@@ -70,11 +70,13 @@ df["mol"] = df.Smiles.apply(Chem.MolFromSmiles)
 df
 mols = df["mol"]
 mols
+# Pandas series
 type(mols)
 mols = list(mols)
+# Pandas list
 type(mols)
-df.set_index(["Name"])
-df
+# df.set_index(["Name"])
+# df
 
 # --Testing MolsToGridImage - gives IPython.core.display.Image object
 # which means this'll likely only work for Jupyter notebook environment only
@@ -95,31 +97,24 @@ df
 
 # --Testing MolToFile 
 # TODO:
-# **?Write a function to allow input selection to save say 2 or more molecules in 1 file**
-# Can only save a single compound (specify index position) as PNG file
+# **Write a function to allow input of index number & file name to save 2 or more molecules in 1 file**
+# MolToFile() can only save a single compound (specify index position) as PNG file
 
 # Draft function v.1 - saving specified compound as PNG file:
-# i = index number for each compound
-# file_name = name of PNG file
+# index = index position number of each compound
+# file_name = name of PNG file to be saved
 
-# Reference function from SO:
-# class Thing:
-#   def __init__(self,a):
-#     self.a = a
-# def dosomething(ref)
-#   ref.a += 1
+def select_molecules(index, file_name):
+    for mol in df["mol"]:
+        image = Draw.MolToFile(mols[index], f"{file_name}.png")
+        return image
+    
+select_molecules(0, "test")
+select_molecules(1, "test1")
 
-# t = Thing(3)
-# dosomething(t)
-# print("T is now",t.a)
+# img = Image.open(f"{file_name}".png)
+# blank_image = Image.new("RGB", (600, 600))
 
-# TODO: Wrong data type for i for now (recognised as str, not integer)
-def select_molecules(i):
-    for i in df:
-        # smiles = SmilesWriter(f"{file_name}.smi")
-        Draw.MolToFile(mols[i])
-
-select_molecules(4)
 
 # #Draw.MolToFile(mols[2], "anti.png")
 # Draw.MolToFile(mols[0], "af1.png")

@@ -22,26 +22,31 @@ from PIL import Image
 from shiny import App, Inputs, Outputs, Session, render, ui
 from shiny.types import ImgData
 
+# Data source---
+# Pandas library renders df columns in strange data types
+# So using Polars instead then convert to Pandas df
+df = pl.read_csv("df_ai.csv")
+df = df.to_pandas()
+df["mol"] = df["Smiles"].apply(lambda x: dm.to_mol(x))
+mols = df["mol"]
+mols = list(mols)
+
 
 # Input--- **work-in-progress**
 app_ui = ui.page_fluid(
+    ui.input_numeric("mol", "Molecule index:", 0, min=0, max=143),
+    ui.input_text("filename", "File name of PNG file:", "Please enter here"),
     ui.output_image("image")
+    # **Need to add a reactive action button e.g. "Confirm" 
+    # to trigger/prompt displaying image**
 )
 
-# Output---
+# Output--- **work-in-progress**
 def server(input, output, session):
     @output
+    @render.text
     @render.image
     def image():
-        # Pandas library renders df columns in strange data types
-        # So using Polars instead then convert to Pandas df
-        df = pl.read_csv("df_ai.csv")
-        df = df.to_pandas()
-        df["mol"] = df["Smiles"].apply(lambda x: dm.to_mol(x))
-        mols = df["mol"]
-        mols = list(mols)
-        
-
         # MolsToGridImage() works in Jupyter notebook only (returns IPython.core.display.Image object)
         #img = Draw.MolsToGridImage(mols) 
 
@@ -67,41 +72,42 @@ def server(input, output, session):
         # image_new = Image.open("antiinf.png")
         # image_new.show()
 
-        # --TODO:
-        # Write function to link MolToFile() to input selection
-        # MolToFile() - only saving a single compound as PNG file (via index position)
 
+        # MolToFile() - only saving a single compound as PNG file (via index position)
         # Draft function v.1 - saving specified compound as PNG file:
-        # i = index number for each compound
-        # file_name = name of PNG file
-        # def select_molecules(i, file_name):
-        #     for i in mols:
-        #         # smiles = SmilesWriter(f"{file_name}.smi")
-        #         Draw.MolToFile(mols[i], f"{file_name}.png")
+        # index = index position number of each compound
+        # file_name = name of PNG file to be saved
+
+        # **this part works with PNG file saved as input number**
+        Draw.MolToFile(mols[input.mol()], f"{input.filename()}.png")
+
         
         # --Testing MolToFile 
-        Draw.MolToFile(mols[0], "af1.png")
-        Draw.MolToFile(mols[1], "af2.png")
-        Draw.MolToFile(mols[2], "af3.png")
-        Draw.MolToFile(mols[3], "af4.png")
+        # Draw.MolToFile(mols[0], "af1.png")
+        # Draw.MolToFile(mols[1], "af2.png")
+        # Draw.MolToFile(mols[2], "af3.png")
+        # Draw.MolToFile(mols[3], "af4.png")
+
+
+        #img = Image.open(f"{input.filename()}.png")
 
         # --Using PIL/Pillow to manipulate images
-        img1 = Image.open("af1.png")
-        img2 = Image.open("af2.png")
-        img3 = Image.open("af3.png")
-        img4 = Image.open("af4.png")
+        # img1 = Image.open("af1.png")
+        # img2 = Image.open("af2.png")
+        # img3 = Image.open("af3.png")
+        # img4 = Image.open("af4.png")
 
         # Create a blank image template - (width, height)
-        blank_image = Image.new("RGB", (600, 600))
+        #blank_image = Image.new("RGB", (600, 600))
 
         # Paste img1 to img4 together in a grid (top left, right & bottom left, right)
-        blank_image.paste(img1, (0, 0))
-        blank_image.paste(img2, (300, 0))
-        blank_image.paste(img3, (0, 300))
-        blank_image.paste(img4, (300, 300))
+        # blank_image.paste(img1, (0, 0))
+        # blank_image.paste(img2, (300, 0))
+        # blank_image.paste(img3, (0, 300))
+        # blank_image.paste(img4, (300, 300))
 
         # Save combined img1 & img2 as a new PNG file
-        blank_image.save("merged.png")
+        #blank_image.save("merged.png")
 
 
         # --Use local file path to import PNG image file
@@ -110,9 +116,10 @@ def server(input, output, session):
         # img: ImgData = {"src": str(dir / "anti-inf.png"), "width": "2350px", "height": "2350px"}
         # return img
 
-        # Showing image from a saved PNG file
+        # **Not showing up in app yet!**
+        # Showing image from the saved PNG file
         dir = Path(__file__).resolve().parent
-        img: ImgData = {"src": str(dir / "merged.png")} 
+        img: ImgData = {"src": str(dir / f"{input.filename()}.png")} 
         return img 
 
         #return image

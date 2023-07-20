@@ -4,17 +4,17 @@
 # Import libraries---
 import pandas as pd
 import polars as pl
-# from rdkit import Chem
-# from rdkit.Chem import Draw
-# import datamol as dm
+from rdkit import Chem
+from rdkit.Chem import Draw
+import datamol as dm
 from shiny import App, render, ui
 from itables.shiny import DT
 
 
 # Data source---
-df = pl.read_csv("df_ai.csv")
-df = df.to_pandas()
-df = df.set_index(["Name"])
+df = pd.read_csv("df_ai.csv")
+# Keeping index column
+df = df.reset_index()
 
 
 # Input---
