@@ -96,7 +96,6 @@ type(mols)
 
 
 # --Testing MolToFile 
-# TODO:
 # **Write a function to allow input of index number & file name to save 2 or more molecules in 1 file**
 # MolToFile() can only save a single compound (specify index position) as PNG file
 
