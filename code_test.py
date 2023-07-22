@@ -103,17 +103,16 @@ type(mols)
 # index = index position number of each compound
 # file_name = name of PNG file to be saved
 
-def select_molecules(index, file_name):
-    for mol in df["mol"]:
-        image = Draw.MolToFile(mols[index], f"{file_name}.png")
-        return image
+# def select_molecules(index, file_name):
+#     for mol in df["mol"]:
+#         image = Draw.MolToFile(mols[index], f"{file_name}.png")
+#         return image
     
-select_molecules(0, "test")
-select_molecules(1, "test1")
+# select_molecules(0, "test")
+# select_molecules(1, "test1")
 
 # img = Image.open(f"{file_name}".png)
 # blank_image = Image.new("RGB", (600, 600))
-
 
 # #Draw.MolToFile(mols[2], "anti.png")
 # Draw.MolToFile(mols[0], "af1.png")
@@ -166,3 +165,4 @@ select_molecules(1, "test1")
 # Chem.PandasTools.FrameToGridImage(df, column = "mol")
 
 
+# TODO: Test lasso highlighting in Datamol and substructure highlighting in RDKit
