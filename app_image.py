@@ -1,5 +1,6 @@
 # App showing 2D images of small molecules of interests
-# Rough plan of adding structure alignment/substructure highlighting once input determined
+# Initial plans: showing 2D images of molecules in app
+# Other additions: adding structure alignment/substructure highlighting 
 
 # Import libraries---
 import pandas as pd
@@ -18,8 +19,8 @@ from shiny.types import ImgData
 
 
 # Data source---
-# Pandas library renders df columns in strange data types
-# So using Polars instead then convert to Pandas df
+# Pandas renders df columns in strange data types So using Polars then convert to Pandas df
+# Using pre-processed and standardised data with small molecules' SMILES and others
 df = pl.read_csv("df_ai_cleaned.csv")
 df = df.to_pandas()
 df["mol"] = df["standard_smiles"].apply(lambda x: dm.to_mol(x))
@@ -27,27 +28,26 @@ mols = df["mol"]
 mols = list(mols)
 
 
-# Input--- **work-in-progress**
-# TODO: input types ready, need to set up page style e.g. add columns etc.
+# Input--- 
+# TODO: formatting page style
 app_ui = ui.page_fluid(
     ui.h4("Compound input selections"),
     ui.row(
         ui.column(3, ui.input_numeric("mol", "Index number of compound:", 0, min=0, max=143)),
-        ui.column(3, ui.input_text("filename", "PNG file name for compound:")),
+        ui.column(3, ui.input_text("filename", "File name for compound:")),
         ),
         ui.input_action_button("btn", "Confirm", class_="btn-success"),
         ui.output_image("image"),
     ui.row(
         ui.column(3, ui.input_numeric("mol1", "Specify index number of compound:", 0, min=0, max=143)),
-        ui.column(3, ui.input_text("filename1", "PNG file name for compound:")),
+        ui.column(3, ui.input_text("filename1", "File name for compound:")),
         ),
         ui.input_action_button("btn1", "Confirm", class_="btn-success"),
         ui.output_image("image1")
 )
         
 
-# Output--- **work-in-progress**
-# Below code works for inputting one molecule, saved as PNG file with image shown in app
+# Output--- 
 def server(input, output, session):
     @output
     @render.image
@@ -64,7 +64,6 @@ def server(input, output, session):
         with reactive.isolate():
             Draw.MolToFile(mols[input.mol()], f"{input.filename()}.png")
 
-        # TODO: ?can somehow formulate to take in 2 PNG images (or more e.g. 4)
 
         # --Testing MolToFile - 4 PNG files
         # Draw.MolToFile(mols[0], "af1.png")
@@ -80,13 +79,10 @@ def server(input, output, session):
     @output
     @render.image
     def image1():
-        # Place action button here to take a reactive dependency
+        # Action button
         input.btn1()
 
-        # Use reactive.isolate to not take a reactive dependency,
-        # when entering/specifying compound and name of PNG file saved
-        # only execute the PNG file generating & saving for the specified compound
-        # when pressing the "Confirm" action button
+        # Use reactive.isolate() to action the MolToFile() code
         with reactive.isolate():
             Draw.MolToFile(mols[input.mol1()], f"{input.filename1()}.png")
 
@@ -95,9 +91,9 @@ def server(input, output, session):
         img1: ImgData = {"src": str(dir / f"{input.filename1()}.png")}
         return img1
     
-    
-    # def merge_image():
 
+    # TODO: Function to paste PNG files into a table (side-by-side first for 2 images)
+    # def merge_image():
 
     #     img = Image.open(f"{input.filename()}.png")
 
@@ -127,7 +123,4 @@ def server(input, output, session):
 
 
         
-                
-
-
 app = App(app_ui, server)
