@@ -1,13 +1,11 @@
-# App showing 2D images of small molecules of interests
-# Initial plans: showing 2D images of molecules in app
-# Other additions: adding structure alignment/substructure highlighting 
+# Shiny for Python app for viewing and saving 2D images of small molecules of interests
+# Showing 2D images of molecules via MolToFile()
+# TODO: Adding substructure highlighting via MolToImage()
 
 # Import libraries---
 import pandas as pd
-import polars as pl
 from rdkit import Chem
 from rdkit.Chem import Draw
-from rdkit.Chem.Draw import rdMolDraw2D
 
 import datamol as dm
 
@@ -66,7 +64,13 @@ app_ui = ui.page_fluid(
         ui.column(3, ui.input_text("merge_filename", "File name for merged images:")),
     ),
         ui.input_action_button("btn_merge", "Confirm", class_="btn"),
-        ui.output_image("merge_image")
+        ui.output_image("merge_image"),
+    # Potentially adding MolToImage() to highlight atoms and bonds
+    # ui.row(
+    #     ui.column(3, ui.input_text("highlight_mol", "Enter:")),
+    # ),
+    #     ui.input_action_button("btn_highlight", "Send", class_="btn"),
+    #     ui.output_image("highlight")
 )
 
 # Old app_ui layout:
@@ -195,6 +199,17 @@ def server(input, output, session):
         dir = Path(__file__).resolve().parent
         img_merge: ImgData = {"src": str(dir / f"{input.merge_filename()}.png")}
         return img_merge
+    
 
+    # TODO: Potentially adding MolToImage() to highlight bonds and atoms in compounds
+    # @output
+    # @render.image
+
+    # Testing MolToImage() - code below worked in code_test.py
+    # again this works for one molecule at a time via index position
+    # from matplotlib.colors import ColorConverter 
+    # img = Draw.MolToImage(mols[1], highlightAtoms=[1,2,3], highlightBonds = [1,2], highlightColor=ColorConverter().to_rgb("aqua")) 
+    # img.save("molecule.png")
+    
 
 app = App(app_ui, server)

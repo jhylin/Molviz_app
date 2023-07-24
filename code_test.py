@@ -167,4 +167,49 @@ type(mols)
 # Chem.PandasTools.FrameToGridImage(df, column = "mol")
 
 
-# TODO: Test lasso highlighting in Datamol and substructure highlighting in RDKit
+# Testing Lasso highlight with multiple substructures with PNG image
+# Trialled & worked, likely better to stay in a notebook format
+# Example from https://dev.to/dessygil/lasso-highlighting-in-datamol-36l3
+# import datamol as dm
+# target_molecule = "CO[C@@H](O)C1=C(O[C@H](F)Cl)C(C#N)=C1ONNC[NH3+]"
+# substructure = ["CONN", "N#CC~CO"]
+# dm.lasso_highlight_image(target_molecule, substructure, (400, 400), use_svg=False)
+
+
+# Test "Highlight Molecule Differences" from RDKit:
+# Best to stay in notebook format!
+# from rdkit import Chem
+# from rdkit.Chem import Draw
+# from rdkit.Chem import rdFMCS
+# from rdkit.Chem.Draw import rdDepictor
+# rdDepictor.SetPreferCoordGen(True)
+
+# mol1 = Chem.MolFromSmiles('FC1=CC=C2C(=C1)C=NN2')
+# mol2 = Chem.MolFromSmiles('CCC1=C2NN=CC2=CC(Cl)=C1')
+
+# def view_difference(mol1, mol2):
+#     mcs = rdFMCS.FindMCS([mol1,mol2])
+#     mcs_mol = Chem.MolFromSmarts(mcs.smartsString)
+
+#     match1 = mol1.GetSubstructMatch(mcs_mol)
+#     target_atm1 = []
+#     for atom in mol1.GetAtoms():
+#         if atom.GetIdx() not in match1:
+#             target_atm1.append(atom.GetIdx())
+
+#     match2 = mol2.GetSubstructMatch(mcs_mol)
+#     target_atm2 = []
+#     for atom in mol2.GetAtoms():
+#         if atom.GetIdx() not in match2:
+#             target_atm2.append(atom.GetIdx())
+#     # Works with MolsToGridImage(), not MolToImage()
+#     return Draw.MolToImage([mol1, mol2],highlightAtoms=[target_atm1, target_atm2])
+
+# view_difference(mol1,mol2)
+
+
+# **So far the best for Shiny for Python app to add molecule highlighting**
+# Testing MolToImage():
+from matplotlib.colors import ColorConverter 
+img = Draw.MolToImage(mols[1], highlightAtoms=[1,2,3], highlightBonds = [1,2], highlightColor=ColorConverter().to_rgb("aqua")) 
+img.save("molecule.png")
