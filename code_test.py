@@ -10,7 +10,7 @@ from rdkit.Chem import PandasTools
 from rdkit.Chem.Draw import rdMolDraw2D, MolsToGridImage
 #from rdkit.Chem.rdmolfiles import SmilesWriter, SmilesMolSupplier
 
-# IPythonConsole for Jupyter notebook environment only
+# **IPythonConsole for Jupyter notebook environment only**
 from rdkit.Chem.Draw import IPythonConsole
 # Set below to false to show PNG 
 IPythonConsole.ipython_useSVG=False
@@ -63,6 +63,8 @@ df = pl.read_csv("df_ai.csv")
 df = df.to_pandas()
 #df.head()
 #type(df)
+# Best to use copy of df to avoid changing original dataset object
+df = df.copy()
 
 
 # Generate RDKit molecules as a column from dataframe

@@ -123,7 +123,6 @@ def server(input, output, session):
         # img: ImgData = {"src": str(dir / "anti-inf.png"), "width": "2350px", "height": "2350px"}
         # return img
 
-        # TODO: **Not showing up in app yet!** ?to add reactive effect
         # Showing image from the saved PNG file
         
         dir = Path(__file__).resolve().parent
