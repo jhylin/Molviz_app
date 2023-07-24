@@ -19,5 +19,6 @@ Originally I had an idea of incorporating mols2grid library within Shiny for Pyt
 - Showing 4 PNG images of selected compounds in table grid format if running app_image.py
 - Saving function of selected compounds as PNG files in working directory for both individual selected compounds and all 4 together in a table grid (reactive effect after pressing confirm button, which will also lead to a direct appearance of compound PNG image in app)
 
+<br>
 
 <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
