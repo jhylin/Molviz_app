@@ -11,12 +11,13 @@ Originally I had an idea of incorporating mols2grid library within Shiny for Pyt
 - Shiny for Python web application for viewing and searching in dataframe (ITables) and viewing 2D images of small molecules of interests
 - The data table and image parts have been separated
 - The interactive table will now be within the Jupyter notebook environment (Shinylive app embedding method currently not working, but app deployment to other platforms e.g. shinyapps.io should be working)
-- Molviz_app is still currently going to be embedded inside Quarto document (to be tested)
+- Molviz_app will be deployed via Shinyapps.io (not as embedding inside Quarto doc as RDKit does not have pure wheel file since it's not written purely in Python, with also C++)
 
 ---
 
 #### **Current status - end of July 2023**
 
-- Showing at least two PNG images of small molecules in app if using app_image.py (plan to increase to four if possible, so this may form a 4-grid view)
-- Saving function of input compounds as PNG files in working directory (reactive effect after pressing confirm button, which will also lead to a direct appearance of compound PNG image in app)
+- Showing individual PNG images of selected compounds side-by-side
+- Showing 4 PNG images of selected compounds in table grid format if running app_image.py
+- Saving function of selected compounds as PNG files in working directory for both individual selected compounds and all 4 together in a table grid (reactive effect after pressing confirm button, which will also lead to a direct appearance of compound PNG image in app)
 - Open source licence pending
