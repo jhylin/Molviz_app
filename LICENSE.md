@@ -2,5 +2,5 @@ For details of the CC-BY-SA license, please visit: https://creativecommons.org/l
 
 Other contact details if needed:
 Creative Commons
-PO Box 1866, Mountain View, CA 94042
-info@creativecommons.org
+- Postal: PO Box 1866, Mountain View, CA 94042
+- Email: info@creativecommons.org
