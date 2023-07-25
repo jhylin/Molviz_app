@@ -209,9 +209,9 @@ type(mols)
 
 
 # **So far the best for Shiny for Python app to add molecule highlighting**
-# Testing MolToImage():
-from matplotlib.colors import ColorConverter 
-img = Draw.MolToImage(mols[1], highlightAtoms=[1,2,3], highlightBonds = [1,2], highlightColor=ColorConverter().to_rgb("aqua")) 
-img.save("molecule.png")
+# Testing MolToImage() - with function for highlighting atoms & bonds!
+# from matplotlib.colors import ColorConverter 
+# img = Draw.MolToImage(mols[1], highlightAtoms=[1,2,3], highlightBonds = [1,2], highlightColor=ColorConverter().to_rgb("aqua")) 
+# img.save("molecule.png")
 
 

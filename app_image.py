@@ -1,6 +1,6 @@
 # Shiny for Python app for viewing and saving 2D images of small molecules of interests
-# Showing 2D images of molecules via MolToFile()
-# TODO: Adding substructure highlighting via MolToImage()
+# 2D images of molecules via MolToFile() - works
+# Atoms & bonds highlighting via MolToImage() - works
 
 # Import libraries---
 import pandas as pd
@@ -27,7 +27,14 @@ mols = list(mols)
 
 
 # Input--- 
-# TODO: formatting page style
+# TODO: need to re-arrange ui style
+# 1) try ui.navset_tab_card & ui.nav() to keep each of the 4 cpds in separate tabs! 
+# - refer to "Orbit simulation" example
+# 2) change the merged PNG image from ui.row() to ui.column() to be in the right hand side of the space
+# - refer to "Orbit simulation" example
+# 3) show dataframe beneath PNG image processing area 
+# - refer to "Selecting data" example, note "all_rows" 
+# - to allow quick references of compound index numbers in the same app
 app_ui = ui.page_fluid(
     ui.h4("Compound input selections"),
     ui.row(
@@ -244,17 +251,6 @@ def server(input, output, session):
         img_merge: ImgData = {"src": str(dir / f"{input.merge_filename()}.png")}
         return img_merge
     
-
-    # TODO: Potentially adding MolToImage() to highlight bonds and atoms in compounds
-    # @output
-    # @render.image
-
-    # Testing MolToImage() - code below worked in code_test.py
-    # again this works for one molecule at a time via index position
-
-    # from matplotlib.colors import ColorConverter 
-    # img = Draw.MolToImage(mols[1], highlightAtoms=[1,2,3], highlightBonds = [1,2], highlightColor=ColorConverter().to_rgb("aqua")) 
-    # img.save("molecule.png")
     
 
 app = App(app_ui, server)
