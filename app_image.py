@@ -6,11 +6,11 @@
 import pandas as pd
 from rdkit import Chem
 from rdkit.Chem import Draw
-
 import datamol as dm
 
 from pathlib import Path
 from PIL import Image
+from matplotlib.colors import ColorConverter 
 
 from shiny import App, Inputs, Outputs, Session, render, ui, reactive
 from shiny.types import ImgData
@@ -33,31 +33,55 @@ app_ui = ui.page_fluid(
     ui.row(
         ui.column(
             3, 
-            ui.input_numeric("mol1", "Select index number of 1st compound:", 0, min=0, max=143),
+            ui.input_numeric("mol1", "Select index number of 1st compound:", 0, min = 0, max = 143),
+            ui.input_numeric("atom1", "1st atom number:", 1, min =1, max = 50),
+            ui.input_numeric("atom2", "2nd atom number:", 1, min = 1, max = 50),
+            ui.input_numeric("atom3", "3rd atom number:", 1, min = 1, max = 50),
+            ui.input_numeric("bond1", "Enter bond number to highlight:", 1, min = 1, max = 50),
+            ui.input_numeric("bond2", "Enter bond number to highlight:", 1, min = 1, max = 50),
+            ui.input_numeric("bond3", "Enter bond number to highlight:", 1, min = 1, max = 50),
             ui.input_text("filename1", "File name for compound:"),
             ui.input_action_button("btn1", "Confirm", class_="btn"),
             ui.output_image("image1")
         ),
         ui.column(
             3, 
-            ui.input_numeric("mol2", "Select index number of 2nd compound:", 0, min=0, max=143),
+            ui.input_numeric("mol2", "Select index number of 2nd compound:", 0, min = 0, max = 143),
+            ui.input_numeric("atom4", "Atom number to highlight:", 1, min =1, max = 50),
+            ui.input_numeric("atom5", "Atom number to highlight:", 1, min = 1, max = 50),
+            ui.input_numeric("atom6", "Atom number to highlight:", 1, min = 1, max = 50),
+            ui.input_numeric("bond4", "Enter bond number to highlight:", 1, min = 1, max = 50),
+            ui.input_numeric("bond5", "Enter bond number to highlight:", 1, min = 1, max = 50),
+            ui.input_numeric("bond6", "Enter bond number to highlight:", 1, min = 1, max = 50),
             ui.input_text("filename2", "File name for compound:"),
             ui.input_action_button("btn2", "Confirm", class_="btn"),
-            ui.output_image("image2"),
+            ui.output_image("image2")
         ),
         ui.column(
             3,
-            ui.input_numeric("mol3", "Select index number of 3rd compound:", 0, min=0, max=143),
+            ui.input_numeric("mol3", "Select index number of 3rd compound:", 0, min = 0, max = 143),
+            ui.input_numeric("atom7", "Atom number to highlight:", 1, min =1, max = 50),
+            ui.input_numeric("atom8", "Atom number to highlight:", 1, min = 1, max = 50),
+            ui.input_numeric("atom9", "Atom number to highlight:", 1, min = 1, max = 50),
+            ui.input_numeric("bond7", "Enter bond number to highlight:", 1, min = 1, max = 50),
+            ui.input_numeric("bond8", "Enter bond number to highlight:", 1, min = 1, max = 50),
+            ui.input_numeric("bond9", "Enter bond number to highlight:", 1, min = 1, max = 50),
             ui.input_text("filename3", "File name for compound:"),
             ui.input_action_button("btn3", "Confirm", class_="btn"),
-            ui.output_image("image3"),
+            ui.output_image("image3")
         ),
         ui.column(
             3,
-            ui.input_numeric("mol4", "Select index number of 4th compound:", 0, min=0, max=143),
+            ui.input_numeric("mol4", "Select index number of 4th compound:", 0, min = 0, max = 143),
+            ui.input_numeric("atom10", "Atom number to highlight:", 1, min =1, max = 50),
+            ui.input_numeric("atom11", "Atom number to highlight:", 1, min = 1, max = 50),
+            ui.input_numeric("atom12", "Atom number to highlight:", 1, min = 1, max = 50),
+            ui.input_numeric("bond10", "Enter bond number to highlight:", 1, min = 1, max = 50),
+            ui.input_numeric("bond11", "Enter bond number to highlight:", 1, min = 1, max = 50),
+            ui.input_numeric("bond12", "Enter bond number to highlight:", 1, min = 1, max = 50),
             ui.input_text("filename4", "File name for compound:"),
             ui.input_action_button("btn4", "Confirm", class_="btn"),
-            ui.output_image("image4"),
+            ui.output_image("image4")
         )
     ),
     ui.row(
@@ -65,12 +89,6 @@ app_ui = ui.page_fluid(
     ),
         ui.input_action_button("btn_merge", "Confirm", class_="btn"),
         ui.output_image("merge_image"),
-    # Potentially adding MolToImage() to highlight atoms and bonds
-    # ui.row(
-    #     ui.column(3, ui.input_text("highlight_mol", "Enter:")),
-    # ),
-    #     ui.input_action_button("btn_highlight", "Send", class_="btn"),
-    #     ui.output_image("highlight")
 )
 
 # Old app_ui layout:
@@ -98,6 +116,7 @@ app_ui = ui.page_fluid(
 
 # Server output--- 
 def server(input, output, session):
+    #@reactive.Effect
     @output
     @render.image
     # Function to show 1st selected PNG image
@@ -111,12 +130,19 @@ def server(input, output, session):
         # then execute the generating & saving of PNG file for the specified compound
         # after pressing "Confirm" action button
         with reactive.isolate():
-            Draw.MolToFile(mols[input.mol1()], f"{input.filename1()}.png")
+            # May end up using MolToImage instead, then leave file saving function for merged image
+            img = Draw.MolToImage(mols[input.mol1()], 
+                                  highlightAtoms = [input.atom1(), input.atom2(), input.atom3()], 
+                                  highlightBonds = [input.bond1(), input.bond2(), input.bond3()], 
+                                  highlightColor=ColorConverter().to_rgb("aqua")
+                                  ) 
+            img.save(f"{input.filename1()}.png")
+            #Draw.MolToFile(mols[input.mol1()], f"{input.filename1()}.png")
 
-        # Show saved PNG file from selected compound
-        dir = Path(__file__).resolve().parent
-        img1: ImgData = {"src": str(dir / f"{input.filename1()}.png")}
-        return img1
+            # Show saved PNG file from selected compound
+            # dir = Path(__file__).resolve().parent
+            # img1: ImgData = {"src": str(dir / f"{input.filename1()}.png")}
+            # return img1
     
     @output
     @render.image
@@ -128,12 +154,18 @@ def server(input, output, session):
 
         # Use reactive.isolate() to isolate MolToFile() code until confirming with action button
         with reactive.isolate():
-            Draw.MolToFile(mols[input.mol2()], f"{input.filename2()}.png")
+            #Draw.MolToFile(mols[input.mol2()], f"{input.filename2()}.png")
+            img = Draw.MolToImage(mols[input.mol2()], 
+                                  highlightAtoms = [input.atom4(), input.atom5(), input.atom6()], 
+                                  highlightBonds = [input.bond4(), input.bond5(), input.bond6()], 
+                                  highlightColor=ColorConverter().to_rgb("aqua")
+                                  ) 
+            img.save(f"{input.filename2()}.png")
 
         # Show saved PNG file from selected compound
-        dir = Path(__file__).resolve().parent
-        img2: ImgData = {"src": str(dir / f"{input.filename2()}.png")}
-        return img2
+        # dir = Path(__file__).resolve().parent
+        # img2: ImgData = {"src": str(dir / f"{input.filename2()}.png")}
+        # return img2
     
     @output
     @render.image
@@ -145,12 +177,18 @@ def server(input, output, session):
 
         # Use reactive.isolate() to isolate MolToFile() code until confirming with action button
         with reactive.isolate():
-            Draw.MolToFile(mols[input.mol3()], f"{input.filename3()}.png")
+            #Draw.MolToFile(mols[input.mol3()], f"{input.filename3()}.png")
+            img = Draw.MolToImage(mols[input.mol3()], 
+                                  highlightAtoms = [input.atom7(), input.atom8(), input.atom9()], 
+                                  highlightBonds = [input.bond7(), input.bond8(), input.bond9()], 
+                                  highlightColor=ColorConverter().to_rgb("aqua")
+                                  ) 
+            img.save(f"{input.filename3()}.png")
 
         # Show saved PNG file from selected compound
-        dir = Path(__file__).resolve().parent
-        img3: ImgData = {"src": str(dir / f"{input.filename3()}.png")}
-        return img3
+        # dir = Path(__file__).resolve().parent
+        # img3: ImgData = {"src": str(dir / f"{input.filename3()}.png")}
+        # return img3
     
     @output
     @render.image
@@ -162,12 +200,18 @@ def server(input, output, session):
 
         # Use reactive.isolate() to isolate MolToFile() code until confirming with action button
         with reactive.isolate():
-            Draw.MolToFile(mols[input.mol4()], f"{input.filename4()}.png")
+            #Draw.MolToFile(mols[input.mol4()], f"{input.filename4()}.png")
+            img = Draw.MolToImage(mols[input.mol4()], 
+                                  highlightAtoms = [input.atom10(), input.atom11(), input.atom12()], 
+                                  highlightBonds = [input.bond10(), input.bond11(), input.bond12()], 
+                                  highlightColor=ColorConverter().to_rgb("aqua")
+                                  ) 
+            img.save(f"{input.filename4()}.png")
 
         # Show saved PNG file from selected compound
-        dir = Path(__file__).resolve().parent
-        img4: ImgData = {"src": str(dir / f"{input.filename4()}.png")}
-        return img4
+        # dir = Path(__file__).resolve().parent
+        # img4: ImgData = {"src": str(dir / f"{input.filename4()}.png")}
+        # return img4
     
     @output
     @render.image
@@ -207,6 +251,7 @@ def server(input, output, session):
 
     # Testing MolToImage() - code below worked in code_test.py
     # again this works for one molecule at a time via index position
+
     # from matplotlib.colors import ColorConverter 
     # img = Draw.MolToImage(mols[1], highlightAtoms=[1,2,3], highlightBonds = [1,2], highlightColor=ColorConverter().to_rgb("aqua")) 
     # img.save("molecule.png")

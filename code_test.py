@@ -213,3 +213,5 @@ type(mols)
 from matplotlib.colors import ColorConverter 
 img = Draw.MolToImage(mols[1], highlightAtoms=[1,2,3], highlightBonds = [1,2], highlightColor=ColorConverter().to_rgb("aqua")) 
 img.save("molecule.png")
+
+
