@@ -28,98 +28,88 @@ mols = list(mols)
 
 # Input--- 
 # TODO: need to re-arrange ui style
-# 1) try ui.navset_tab_card & ui.nav() to keep each of the 4 cpds in separate tabs! 
+# Added ui.navset_tab_card & ui.nav() to keep each of the 4 cpds in separate tabs! 
 # - refer to "Orbit simulation" example
-# 2) change the merged PNG image from ui.row() to ui.column() to be in the right hand side of the space
+# Changed the merged PNG image from ui.row() to ui.column() to be in the right hand side of the space
 # - refer to "Orbit simulation" example
-# 3) show dataframe beneath PNG image processing area 
+# 3) show dataframe beneath PNG image processing area (or top of merged image)
 # - refer to "Selecting data" example, note "all_rows" 
 # - to allow quick references of compound index numbers in the same app
+# 4) ?there's an incremental input_numberic field e.g. one field triggering next via entering
 app_ui = ui.page_fluid(
     ui.h4("Compound input selections"),
     ui.row(
         ui.column(
-            3, 
-            ui.input_numeric("mol1", "Select index number of 1st compound:", 0, min = 0, max = 143),
-            ui.input_numeric("atom1", "1st atom number:", 1, min =1, max = 50),
-            ui.input_numeric("atom2", "2nd atom number:", 1, min = 1, max = 50),
-            ui.input_numeric("atom3", "3rd atom number:", 1, min = 1, max = 50),
-            ui.input_numeric("bond1", "Enter bond number to highlight:", 1, min = 1, max = 50),
-            ui.input_numeric("bond2", "Enter bond number to highlight:", 1, min = 1, max = 50),
-            ui.input_numeric("bond3", "Enter bond number to highlight:", 1, min = 1, max = 50),
-            ui.input_text("filename1", "File name for compound:"),
-            ui.input_action_button("btn1", "Confirm", class_="btn"),
-            ui.output_image("image1")
+            4,
+            ui.navset_tab_card(
+                ui.nav(
+                    "1",
+                    ui.input_numeric("mol1", "Select index number of 1st compound:", 0, min = 0, max = 143),
+                    ui.input_numeric("atom1", "1st atom number:", 1, min =1, max = 50),
+                    ui.input_numeric("atom2", "2nd atom number:", 1, min = 1, max = 50),
+                    ui.input_numeric("atom3", "3rd atom number:", 1, min = 1, max = 50),
+                    ui.input_numeric("atom4", "4th atom number:", 1, min = 1, max = 50),
+                    ui.input_numeric("bond1", "Enter bond number to highlight:", 1, min = 1, max = 50),
+                    ui.input_numeric("bond2", "Enter bond number to highlight:", 1, min = 1, max = 50),
+                    ui.input_numeric("bond3", "Enter bond number to highlight:", 1, min = 1, max = 50),
+                    ui.input_text("filename1", "File name for compound:"),
+                    ui.input_action_button("btn1", "Confirm", class_="btn"),
+                    ui.output_image("image1")
+                ),
+                ui.nav(
+                    "2",
+                    ui.input_numeric("mol2", "Select index number of 2nd compound:", 0, min = 0, max = 143),
+                    ui.input_numeric("atom5", "1st atom number:", 1, min =1, max = 50),
+                    ui.input_numeric("atom6", "2nd atom number:", 1, min = 1, max = 50),
+                    ui.input_numeric("atom7", "3rd atom number:", 1, min = 1, max = 50),
+                    ui.input_numeric("atom8", "4th atom number:", 1, min = 1, max = 50),
+                    ui.input_numeric("bond4", "Enter bond number to highlight:", 1, min = 1, max = 50),
+                    ui.input_numeric("bond5", "Enter bond number to highlight:", 1, min = 1, max = 50),
+                    ui.input_numeric("bond6", "Enter bond number to highlight:", 1, min = 1, max = 50),
+                    ui.input_text("filename2", "File name for compound:"),
+                    ui.input_action_button("btn2", "Confirm", class_="btn"),
+                    ui.output_image("image2")
+                ),
+                ui.nav(
+                    "3",
+                    ui.input_numeric("mol3", "Select index number of 3rd compound:", 0, min = 0, max = 143),
+                    ui.input_numeric("atom9", "1st atom number:", 1, min =1, max = 50),
+                    ui.input_numeric("atom10", "2nd atom number:", 1, min = 1, max = 50),
+                    ui.input_numeric("atom11", "3rd atom number:", 1, min = 1, max = 50),
+                    ui.input_numeric("atom12", "4th atom number:", 1, min = 1, max = 50),
+                    ui.input_numeric("bond7", "Enter bond number to highlight:", 1, min = 1, max = 50),
+                    ui.input_numeric("bond8", "Enter bond number to highlight:", 1, min = 1, max = 50),
+                    ui.input_numeric("bond9", "Enter bond number to highlight:", 1, min = 1, max = 50),
+                    ui.input_text("filename3", "File name for compound:"),
+                    ui.input_action_button("btn3", "Confirm", class_="btn"),
+                    ui.output_image("image3")
+                ),
+                ui.nav(
+                    "4",
+                    ui.input_numeric("mol4", "Select index number of 4th compound:", 0, min = 0, max = 143),
+                    ui.input_numeric("atom13", "1st atom number:", 1, min =1, max = 50),
+                    ui.input_numeric("atom14", "2nd atom number:", 1, min = 1, max = 50),
+                    ui.input_numeric("atom15", "3rd atom number:", 1, min = 1, max = 50),
+                    ui.input_numeric("atom16", "4th atom number:", 1, min = 1, max = 50),
+                    ui.input_numeric("bond10", "Enter bond number to highlight:", 1, min = 1, max = 50),
+                    ui.input_numeric("bond11", "Enter bond number to highlight:", 1, min = 1, max = 50),
+                    ui.input_numeric("bond12", "Enter bond number to highlight:", 1, min = 1, max = 50),
+                    ui.input_text("filename4", "File name for compound:"),
+                    ui.input_action_button("btn4", "Confirm", class_="btn"),
+                    ui.output_image("image4")
+                )
+            )
         ),
         ui.column(
             3, 
-            ui.input_numeric("mol2", "Select index number of 2nd compound:", 0, min = 0, max = 143),
-            ui.input_numeric("atom4", "Atom number to highlight:", 1, min =1, max = 50),
-            ui.input_numeric("atom5", "Atom number to highlight:", 1, min = 1, max = 50),
-            ui.input_numeric("atom6", "Atom number to highlight:", 1, min = 1, max = 50),
-            ui.input_numeric("bond4", "Enter bond number to highlight:", 1, min = 1, max = 50),
-            ui.input_numeric("bond5", "Enter bond number to highlight:", 1, min = 1, max = 50),
-            ui.input_numeric("bond6", "Enter bond number to highlight:", 1, min = 1, max = 50),
-            ui.input_text("filename2", "File name for compound:"),
-            ui.input_action_button("btn2", "Confirm", class_="btn"),
-            ui.output_image("image2")
-        ),
-        ui.column(
-            3,
-            ui.input_numeric("mol3", "Select index number of 3rd compound:", 0, min = 0, max = 143),
-            ui.input_numeric("atom7", "Atom number to highlight:", 1, min =1, max = 50),
-            ui.input_numeric("atom8", "Atom number to highlight:", 1, min = 1, max = 50),
-            ui.input_numeric("atom9", "Atom number to highlight:", 1, min = 1, max = 50),
-            ui.input_numeric("bond7", "Enter bond number to highlight:", 1, min = 1, max = 50),
-            ui.input_numeric("bond8", "Enter bond number to highlight:", 1, min = 1, max = 50),
-            ui.input_numeric("bond9", "Enter bond number to highlight:", 1, min = 1, max = 50),
-            ui.input_text("filename3", "File name for compound:"),
-            ui.input_action_button("btn3", "Confirm", class_="btn"),
-            ui.output_image("image3")
-        ),
-        ui.column(
-            3,
-            ui.input_numeric("mol4", "Select index number of 4th compound:", 0, min = 0, max = 143),
-            ui.input_numeric("atom10", "Atom number to highlight:", 1, min =1, max = 50),
-            ui.input_numeric("atom11", "Atom number to highlight:", 1, min = 1, max = 50),
-            ui.input_numeric("atom12", "Atom number to highlight:", 1, min = 1, max = 50),
-            ui.input_numeric("bond10", "Enter bond number to highlight:", 1, min = 1, max = 50),
-            ui.input_numeric("bond11", "Enter bond number to highlight:", 1, min = 1, max = 50),
-            ui.input_numeric("bond12", "Enter bond number to highlight:", 1, min = 1, max = 50),
-            ui.input_text("filename4", "File name for compound:"),
-            ui.input_action_button("btn4", "Confirm", class_="btn"),
-            ui.output_image("image4")
-        )
+            ui.input_text("merge_filename", "File name for merged images:"),
+            ui.input_action_button("btn_merge", "Confirm", class_="btn"),
+            ui.output_image("merge_image"),
+            # Potentially adding data table here! (below merged image)
+            ),
     ),
-    ui.row(
-        ui.column(3, ui.input_text("merge_filename", "File name for merged images:")),
-    ),
-        ui.input_action_button("btn_merge", "Confirm", class_="btn"),
-        ui.output_image("merge_image"),
 )
 
-# Old app_ui layout:
-# app_ui = ui.page_fluid(
-#     ui.h4("Compound input selections"),
-#     ui.row(
-#         ui.column(3, ui.input_numeric("mol1", "Index number of compound:", 0, min=0, max=143)),
-#         ui.column(3, ui.input_text("filename1", "File name for compound:")),
-#         ),
-#         ui.input_action_button("btn1", "Confirm", class_="btn"),
-#         ui.output_image("image1"),
-#     ui.row(
-#         ui.column(3, ui.input_numeric("mol2", "Specify index number of compound:", 0, min=0, max=143)),
-#         ui.column(3, ui.input_text("filename2", "File name for compound:")),
-#         ),
-#         ui.input_action_button("btn2", "Confirm", class_="btn"),
-#         ui.output_image("image2"),
-#     ui.row(
-#         ui.column(3, ui.input_text("merge_filename", "File name for merged images:")),
-#         ),
-#         ui.input_action_button("btn_merge", "Confirm", class_="btn"),
-#         ui.output_image("merge_image")
-# )
-        
 
 # Server output--- 
 def server(input, output, session):
@@ -139,7 +129,7 @@ def server(input, output, session):
         with reactive.isolate():
             # May end up using MolToImage instead, then leave file saving function for merged image
             img = Draw.MolToImage(mols[input.mol1()], 
-                                  highlightAtoms = [input.atom1(), input.atom2(), input.atom3()], 
+                                  highlightAtoms = [input.atom1(), input.atom2(), input.atom3(), input.atom4()], 
                                   highlightBonds = [input.bond1(), input.bond2(), input.bond3()], 
                                   highlightColor=ColorConverter().to_rgb("aqua")
                                   ) 
@@ -147,9 +137,9 @@ def server(input, output, session):
             #Draw.MolToFile(mols[input.mol1()], f"{input.filename1()}.png")
 
             # Show saved PNG file from selected compound
-            # dir = Path(__file__).resolve().parent
-            # img1: ImgData = {"src": str(dir / f"{input.filename1()}.png")}
-            # return img1
+            dir = Path(__file__).resolve().parent
+            img1: ImgData = {"src": str(dir / f"{input.filename1()}.png")}
+            return img1
     
     @output
     @render.image
@@ -163,16 +153,16 @@ def server(input, output, session):
         with reactive.isolate():
             #Draw.MolToFile(mols[input.mol2()], f"{input.filename2()}.png")
             img = Draw.MolToImage(mols[input.mol2()], 
-                                  highlightAtoms = [input.atom4(), input.atom5(), input.atom6()], 
+                                  highlightAtoms = [input.atom5(), input.atom6(), input.atom7(), input.atom8()], 
                                   highlightBonds = [input.bond4(), input.bond5(), input.bond6()], 
                                   highlightColor=ColorConverter().to_rgb("aqua")
                                   ) 
             img.save(f"{input.filename2()}.png")
 
         # Show saved PNG file from selected compound
-        # dir = Path(__file__).resolve().parent
-        # img2: ImgData = {"src": str(dir / f"{input.filename2()}.png")}
-        # return img2
+        dir = Path(__file__).resolve().parent
+        img2: ImgData = {"src": str(dir / f"{input.filename2()}.png")}
+        return img2
     
     @output
     @render.image
@@ -186,16 +176,16 @@ def server(input, output, session):
         with reactive.isolate():
             #Draw.MolToFile(mols[input.mol3()], f"{input.filename3()}.png")
             img = Draw.MolToImage(mols[input.mol3()], 
-                                  highlightAtoms = [input.atom7(), input.atom8(), input.atom9()], 
+                                  highlightAtoms = [input.atom9(), input.atom10(), input.atom11(), input.atom12()], 
                                   highlightBonds = [input.bond7(), input.bond8(), input.bond9()], 
                                   highlightColor=ColorConverter().to_rgb("aqua")
                                   ) 
             img.save(f"{input.filename3()}.png")
 
         # Show saved PNG file from selected compound
-        # dir = Path(__file__).resolve().parent
-        # img3: ImgData = {"src": str(dir / f"{input.filename3()}.png")}
-        # return img3
+        dir = Path(__file__).resolve().parent
+        img3: ImgData = {"src": str(dir / f"{input.filename3()}.png")}
+        return img3
     
     @output
     @render.image
@@ -209,16 +199,16 @@ def server(input, output, session):
         with reactive.isolate():
             #Draw.MolToFile(mols[input.mol4()], f"{input.filename4()}.png")
             img = Draw.MolToImage(mols[input.mol4()], 
-                                  highlightAtoms = [input.atom10(), input.atom11(), input.atom12()], 
+                                  highlightAtoms = [input.atom13(), input.atom14(), input.atom15(), input.atom16()], 
                                   highlightBonds = [input.bond10(), input.bond11(), input.bond12()], 
                                   highlightColor=ColorConverter().to_rgb("aqua")
                                   ) 
             img.save(f"{input.filename4()}.png")
 
         # Show saved PNG file from selected compound
-        # dir = Path(__file__).resolve().parent
-        # img4: ImgData = {"src": str(dir / f"{input.filename4()}.png")}
-        # return img4
+        dir = Path(__file__).resolve().parent
+        img4: ImgData = {"src": str(dir / f"{input.filename4()}.png")}
+        return img4
     
     @output
     @render.image
