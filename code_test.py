@@ -215,3 +215,17 @@ type(mols)
 # img.save("molecule.png")
 
 
+# atomlist = list(range(1, 51))
+# atomlist
+
+# bondlist = list(range(1, 51))
+# bondlist
+
+# type(bondlist)
+
+a = "1, 2, 3"
+# Use list comprehension
+numbers = [int(n) for n in a.split(",")]
+numbers
+#list = list(map(int, a))
+#test_list = list(map(int, test_list))
