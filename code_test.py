@@ -215,6 +215,7 @@ type(mols)
 # img.save("molecule.png")
 
 
+# Below code used to trial different atom & bond number inputs:
 # atomlist = list(range(1, 51))
 # atomlist
 
@@ -223,9 +224,11 @@ type(mols)
 
 # type(bondlist)
 
-a = "1, 2, 3"
-# Use list comprehension
-numbers = [int(n) for n in a.split(",")]
-numbers
+# Sample methods to convert string to integers
 #list = list(map(int, a))
 #test_list = list(map(int, test_list))
+
+# Use list comprehension
+# a = "1, 2, 3"
+# numbers = [int(n) for n in a.split(",")]
+# numbers

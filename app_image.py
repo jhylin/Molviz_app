@@ -25,21 +25,21 @@ df["mol"] = df["standard_smiles"].apply(lambda x: dm.to_mol(x))
 mols = df["mol"]
 mols = list(mols)
 
-atomlist = list(range(1, 51))
-
-bondlist = list(range(1, 51))
-
 
 # Input--- 
 # Added ui.navset_tab_card & ui.nav() to keep each of the 4 cpds in separate tabs! 
 # - refer to "Orbit simulation" example
 # Changed the merged PNG image from ui.row() to ui.column() to be in the right hand side of the space
 # - refer to "Orbit simulation" example
-# TODO: show dataframe beneath PNG image processing area (or top of merged image)
-# - refer to "Selecting data" example, note "all_rows" 
 # - to allow quick references of compound index numbers in the same app
 # Removed multiple input_numeric fields for atom & bond highlightings 
 # - using direct number inputs in input text areas then string to integer conversion
+
+# TODO: 
+# To show dataframe beneath PNG image processing area (or top of merged image)
+# - refer to "Selecting data" example, note "all_rows" OR refer to own app_itable.py!
+# To add shinyswatch theme
+
 app_ui = ui.page_fluid(
     ui.h4("Compound input selections"),
     ui.row(
@@ -112,15 +112,16 @@ def server(input, output, session):
         # after pressing "Confirm" action button
         with reactive.isolate():
             # May end up using MolToImage instead, then leave file saving function for merged image
+            #Draw.MolToFile(mols[input.mol1()], f"{input.filename1()}.png")
             img = Draw.MolToImage(mols[input.mol1()], 
                                   # Use list comprehension to convert a string of numbers into list of integers
+                                  # due to ui.input_text_area only takes in string data type (no other better options yet)
                                   # numbers = [int(n) for n in a.split(",")]
                                   highlightAtoms = [int(n) for n in input.atom1().split(",")],
                                   highlightBonds = [int(n) for n in input.bond1().split(",")], 
-                                  highlightColor=ColorConverter().to_rgb("aqua")
+                                  highlightColor = ColorConverter().to_rgb("aqua")
                                   ) 
             img.save(f"{input.filename1()}.png")
-            #Draw.MolToFile(mols[input.mol1()], f"{input.filename1()}.png")
 
             # Show saved PNG file from selected compound
             dir = Path(__file__).resolve().parent
@@ -141,7 +142,7 @@ def server(input, output, session):
             img = Draw.MolToImage(mols[input.mol2()], 
                                   highlightAtoms = [int(n) for n in input.atom2().split(",")],
                                   highlightBonds = [int(n) for n in input.bond2().split(",")], 
-                                  highlightColor=ColorConverter().to_rgb("aqua")
+                                  highlightColor = ColorConverter().to_rgb("aqua")
                                   ) 
             img.save(f"{input.filename2()}.png")
 
@@ -164,7 +165,7 @@ def server(input, output, session):
             img = Draw.MolToImage(mols[input.mol3()], 
                                   highlightAtoms = [int(n) for n in input.atom3().split(",")],
                                   highlightBonds = [int(n) for n in input.bond3().split(",")],  
-                                  highlightColor=ColorConverter().to_rgb("aqua")
+                                  highlightColor = ColorConverter().to_rgb("aqua")
                                   ) 
             img.save(f"{input.filename3()}.png")
 
@@ -187,7 +188,7 @@ def server(input, output, session):
             img = Draw.MolToImage(mols[input.mol4()], 
                                   highlightAtoms = [int(n) for n in input.atom4().split(",")],
                                   highlightBonds = [int(n) for n in input.bond4().split(",")], 
-                                  highlightColor=ColorConverter().to_rgb("aqua")
+                                  highlightColor = ColorConverter().to_rgb("aqua")
                                   ) 
             img.save(f"{input.filename4()}.png")
 
@@ -226,7 +227,6 @@ def server(input, output, session):
         dir = Path(__file__).resolve().parent
         img_merge: ImgData = {"src": str(dir / f"{input.merge_filename()}.png")}
         return img_merge
-    
     
 
 app = App(app_ui, server)
