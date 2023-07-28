@@ -39,6 +39,7 @@ mols = list(mols)
 
 # TODO: 
 # To add shinyswatch theme
+# To add introduction of app - how to use, functions to view, save and look up compounds
 
 app_ui = ui.page_fluid(
     ui.h4("Compound input selections"),

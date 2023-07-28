@@ -1,3 +1,11 @@
+# ---Code test script only---
+# This script contains many different code tests for the app_molviz_v1.py & app_molviz_v2.py
+# Each code block has some subtitles to explain what each of the block is for
+# Main tests are for RDKit/Datamol functions and also some PIL/Pillow image manipulations
+# For final working app.py, please refer to app_molviz_v2.py
+
+
+
 # --Import libraries
 # Import Pandas
 import pandas as pd
