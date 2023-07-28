@@ -7,13 +7,13 @@ import pandas as pd
 from rdkit import Chem
 from rdkit.Chem import Draw
 import datamol as dm
-
+from itables.shiny import DT
 from pathlib import Path
 from PIL import Image
 from matplotlib.colors import ColorConverter 
-
 from shiny import App, Inputs, Outputs, Session, render, ui, reactive
 from shiny.types import ImgData
+
 
 
 # Data source---
@@ -21,6 +21,7 @@ from shiny.types import ImgData
 df = pd.read_csv("df_ai_cleaned.csv")
 # Avoid any changes to original dataset object by using .copy()
 df = df.copy()
+#df = df.reset_index()
 df["mol"] = df["standard_smiles"].apply(lambda x: dm.to_mol(x))
 mols = df["mol"]
 mols = list(mols)
@@ -34,10 +35,9 @@ mols = list(mols)
 # - to allow quick references of compound index numbers in the same app
 # Removed multiple input_numeric fields for atom & bond highlightings 
 # - using direct number inputs in input text areas then string to integer conversion
+# Added interactive dataframe beneath PNG image processing area
 
 # TODO: 
-# To show dataframe beneath PNG image processing area (or top of merged image)
-# - refer to "Selecting data" example, note "all_rows" OR refer to own app_itable.py!
 # To add shinyswatch theme
 
 app_ui = ui.page_fluid(
@@ -89,8 +89,10 @@ app_ui = ui.page_fluid(
             ui.input_text("merge_filename", "File name for merged images:"),
             ui.input_action_button("btn_merge", "Confirm", class_="btn"),
             ui.output_image("merge_image"),
-            # Potentially adding data table here! (below merged image)
             ),
+        ui.row(
+            ui.page_fluid(ui.HTML(DT(df)))
+        )
     ),
 )
 
