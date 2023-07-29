@@ -6,6 +6,7 @@
 import pandas as pd
 from rdkit import Chem
 from rdkit.Chem import Draw
+#from rdkit.Chem.Draw import rdMolDraw2D
 import datamol as dm
 from itables.shiny import DT
 from pathlib import Path
@@ -13,6 +14,10 @@ from PIL import Image
 from matplotlib.colors import ColorConverter 
 from shiny import App, Inputs, Outputs, Session, render, ui, reactive
 from shiny.types import ImgData
+
+from rdkit.Chem.Draw import IPythonConsole
+
+IPythonConsole.drawOptions.addAtomIndices = True
 
 
 
@@ -59,8 +64,8 @@ app_ui = ui.page_fluid(
                 ui.nav(
                     "2",
                     ui.input_numeric("mol2", "Select 2nd compound via index number:", 0, min = 0, max = 143),
-                    ui.input_text_area("atom2", "Enter atom number to highlight", placeholder = "e.g. 1, 2, 3..."),
-                    ui.input_text_area("bond2", "Enter bond number to highlight:", placeholder = "e.g. 1, 2, 3..."),
+                    ui.input_text_area("atom2", "Enter atom number to highlight", placeholder = "e.g. 0, 1, 2, 3..."),
+                    ui.input_text_area("bond2", "Enter bond number to highlight:", placeholder = "e.g. 0, 1, 2, 3..."),
                     ui.input_text("filename2", "File name for compound:"),
                     ui.input_action_button("btn2", "Confirm", class_="btn"),
                     ui.output_image("image2")
@@ -68,8 +73,8 @@ app_ui = ui.page_fluid(
                 ui.nav(
                     "3",
                     ui.input_numeric("mol3", "Select 3rd compound via index number:", 0, min = 0, max = 143),
-                    ui.input_text_area("atom3", "Enter atom number to highlight", placeholder = "e.g. 1, 2, 3..."),
-                    ui.input_text_area("bond3", "Enter bond number to highlight:", placeholder = "e.g. 1, 2, 3..."),
+                    ui.input_text_area("atom3", "Enter atom number to highlight", placeholder = "e.g. 0, 1, 2, 3..."),
+                    ui.input_text_area("bond3", "Enter bond number to highlight:", placeholder = "e.g. 0, 1, 2, 3..."),
                     ui.input_text("filename3", "File name for compound:"),
                     ui.input_action_button("btn3", "Confirm", class_="btn"),
                     ui.output_image("image3")
@@ -77,8 +82,8 @@ app_ui = ui.page_fluid(
                 ui.nav(
                     "4",
                     ui.input_numeric("mol4", "Select 4th compound via index number:", 0, min = 0, max = 143),
-                    ui.input_text_area("atom4", "Enter atom number to highlight", placeholder = "e.g. 1, 2, 3..."),
-                    ui.input_text_area("bond4", "Enter bond number to highlight:", placeholder = "e.g. 1, 2, 3..."),
+                    ui.input_text_area("atom4", "Enter atom number to highlight", placeholder = "e.g. 0, 1, 2, 3..."),
+                    ui.input_text_area("bond4", "Enter bond number to highlight:", placeholder = "e.g. 0, 1, 2, 3..."),
                     ui.input_text("filename4", "File name for compound:"),
                     ui.input_action_button("btn4", "Confirm", class_="btn"),
                     ui.output_image("image4")

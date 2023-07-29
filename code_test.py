@@ -24,6 +24,7 @@ from rdkit.Chem.Draw import IPythonConsole
 IPythonConsole.ipython_useSVG=False
 # Set below to True to return SVG
 #IPythonConsole.ipython_useSVG=True
+from IPython.display import SVG
 
 import io
 from PIL import Image
@@ -82,9 +83,9 @@ mols = df["mol"]
 mols
 # Pandas series
 type(mols)
-mols = list(mols)
+#mols = list(mols)
 # Pandas list
-type(mols)
+#type(mols)
 # df.set_index(["Name"])
 # df
 
@@ -240,3 +241,46 @@ type(mols)
 # a = "1, 2, 3"
 # numbers = [int(n) for n in a.split(",")]
 # numbers
+
+
+# Thinking of adding atom & bond indices to compound:
+
+# Example code:
+# d2d = rdMolDraw2D.MolDraw2DSVG(350,300)
+# d2d.drawOptions().addAtomIndices=True
+# d2d.DrawMolecule(diclofenac)
+# d2d.FinishDrawing()
+# SVG(d2d.GetDrawingText())
+
+# Good image resolution in Jupyter notebook
+# cpd = rdMolDraw2D.MolDraw2DSVG(350, 300)
+# cpd.drawOptions().addAtomIndices = True
+# cpd.DrawMolecule(mol1)
+# cpd.FinishDrawing()
+# SVG(cpd.GetDrawingText())
+
+# A different method that works in Jupyter notebook with shorter code
+# IPythonConsole.drawOptions.addAtomIndices = True
+# IPythonConsole.molSize = 300,300
+# mol1
+
+# Potentially code below may work outside of Jupyter notebook environment:
+# Labels atom indices for a single molecule
+# mol1 = mols[0]
+# for atom in mol1.GetAtoms():
+#     atom.SetProp('atomLabel',str(atom.GetIdx()+1))
+# mol1
+
+# Function for labelling atom indices for any single molecule inside a series of RDKit molecules
+def get_atom_index(i):
+    mol = mols[i]
+    for atom in mol.GetAtoms():
+        # Decided not too add "+1" since native atom indexing starts at 0 due to using Python!
+        # So the atom index will start at 0 (= first atom)
+        atom.SetProp('atomLabel', str(atom.GetIdx()))
+    return mol
+
+get_atom_index(0)
+get_atom_index(1)
+get_atom_index(2)
+get_atom_index(4)
