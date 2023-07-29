@@ -59,8 +59,8 @@ app_ui = ui.page_fluid(
                     ui.input_text_area("atom1", "Enter atom number to highlight", placeholder = "e.g. 0, 1, 2, 3..."),
                     ui.input_text_area("bond1", "Enter bond number to highlight:", placeholder = "e.g. 0, 1, 2, 3..."),
                     ui.input_text("filename1", "File name for compound:"),
-                    ui.input_action_button("btn1", "Confirm", class_="btn"),
                     ui.input_checkbox("atom_idx", "Show atom index number"),
+                    ui.input_action_button("btn1", "Confirm", class_="btn"),
                     ui.output_image("get_atom_index"),
                     ui.output_image("image1")
                 ),
