@@ -45,7 +45,7 @@ mols = list(mols)
 # TODO: 
 # To add shinyswatch theme
 # To add introduction of app - how to use, functions to view, save and look up compounds
-# ***To add atom indices to compounds***
+# To add atom indices to compounds
 
 app_ui = ui.page_fluid(
     ui.h4("Compound input selections"),
@@ -59,9 +59,12 @@ app_ui = ui.page_fluid(
                     ui.input_text_area("atom1", "Enter atom number to highlight", placeholder = "e.g. 0, 1, 2, 3..."),
                     ui.input_text_area("bond1", "Enter bond number to highlight:", placeholder = "e.g. 0, 1, 2, 3..."),
                     ui.input_text("filename1", "File name for compound:"),
+                    # May need to change to ui.input_select to allow selecting
+                    # compound image with or without atom indices
+                    #ui.input_select("image_style", "Choices for compound image:", ["With_atom_index", "Without_atom_index"]),
                     ui.input_checkbox("atom_idx", "Show atom index number"),
-                    ui.input_action_button("btn1", "Confirm", class_="btn"),
                     ui.output_image("get_atom_index"),
+                    ui.input_action_button("btn1", "Confirm", class_="btn"),
                     ui.output_image("image1")
                 ),
                 ui.nav(
@@ -114,10 +117,13 @@ def server(input, output, session):
     @render.image
     def get_atom_index():
         
-        # Place Check box here to take another reactive dependency
-        input.atom_idx()
-
-        with reactive.isolate():
+        # TODO: Check if need to use reactive.Effect/reactive.event
+        # or check example on check box group input
+        # unable to produce a "toggle" effect to switch to with or without atom indices
+        if input.atom_idx():
+        
+        # May not need to use reactive.isolate
+        #with reactive.isolate():
             # Code to show atom indices
             mol = mols[input.mol1()]
             for atom in mol.GetAtoms():
@@ -145,11 +151,10 @@ def server(input, output, session):
         # after pressing "Confirm" action button
         with reactive.isolate():
 
-
             img = Draw.MolToImage(mols[input.mol1()], 
                                   # Use list comprehension to convert a string of numbers into list of integers
-                                  # due to ui.input_text_area only takes in string data type (no other better options yet)
-                                  # numbers = [int(n) for n in a.split(",")]
+                                  # # # due to ui.input_text_area only takes in string data type (no other better options yet)
+                                  # # numbers = [int(n) for n in a.split(",")]
                                   highlightAtoms = [int(n) for n in input.atom1().split(",")],
                                   highlightBonds = [int(n) for n in input.bond1().split(",")], 
                                   highlightColor = ColorConverter().to_rgb("aqua")
