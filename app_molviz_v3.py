@@ -46,6 +46,7 @@ mols = list(mols)
 app_ui = ui.page_fluid(
     ui.h4("Compound input selections"),
     ui.row(
+        # Left sided area for non-indexed images
         ui.column(
             4,
             ui.navset_tab_card(
@@ -53,15 +54,13 @@ app_ui = ui.page_fluid(
                     "1",
                     ui.input_numeric("mol1", "Select 1st compound via index number:", 0, min = 0, max = 143),
                     ui.input_select("image_style", "Choices for compound image:", 
-                                    {"no_high_no_idx": "No highlights and no index",
-                                     "high_no_idx": "Highlights without index",
-                                     "no_high_idx": "No highlights with index", 
-                                     "high_idx": "Highlights with index"}),
+                                    {"no_high_no_idx": "Without highlights or index",
+                                     "high_no_idx": "Highlights without index"}),
                     ui.input_text_area("atom1", "Enter atom number to highlight", placeholder = "e.g. 0, 1, 2, 3..."),
                     ui.input_text_area("bond1", "Enter bond number to highlight:", placeholder = "e.g. 0, 1, 2, 3..."),
                     #ui.input_checkbox("on", "Show index"),
-                    ui.input_text("filename1_1", "File name for compound image 1:"),
-                    ui.input_text("filename1_2", "File name for compound image 2:"),
+                    ui.input_text("filename1", "File name for compound image 1:"),
+                    #ui.input_text("filename1_2", "File name for compound image 2:"),
                     # Add caption explaining everytime confirm button is clicked, 
                     # a new PNG file will be saved with whatever file name was inputted above
                     # Make desired selections before clicking on the confirm button with diff file names for each
@@ -103,8 +102,9 @@ app_ui = ui.page_fluid(
                 )
             )
         ),
+        # Middle column area for merged image
         ui.column(
-            3, 
+            6, 
             ui.input_text("merge_filename", "File name for merged images:"),
             ui.input_action_button("btn_merge", "Confirm", class_="btn"),
             ui.output_image("merge_image"),
@@ -134,11 +134,39 @@ def server(input, output, session):
 
         with reactive.isolate():
 
-            #for mol in mols:
-
-                if input.image_style() == "high_no_idx":
+            if input.image_style() == "high_no_idx":
                     # Highlight atoms & bonds
                     img = Draw.MolToImage(mols[input.mol1()], 
+                                          highlightAtoms = [int(n) for n in input.atom1().split(",")],
+                                          highlightBonds = [int(n) for n in input.bond1().split(",")], 
+                                          highlightColor = ColorConverter().to_rgb("aqua")
+                                          ) 
+                    # Save image
+                    img.save(f"{input.filename1()}.png")
+                    # Show saved PNG file from selected compound
+                    dir = Path(__file__).resolve().parent
+                    img_1: ImgData = {"src": str(dir / f"{input.filename1()}.png")}
+                    return img_1
+                
+            elif input.image_style() == "no_high_no_idx":
+                    Draw.MolToFile(mols[input.mol1()], f"{input.filename1()}.png")
+                    dir = Path(__file__).resolve().parent
+                    img_1: ImgData = {"src": str(dir / f"{input.filename1()}.png")}
+                    return img_1
+                
+            elif input.image_style() == "no_high_idx":
+                    for atom in mols[input.mol1()].GetAtoms():
+                        atom.SetProp('atomLabel', str(atom.GetIdx()))
+                    Draw.MolToFile(mols[input.mol1()], f"{input.filename1()}.png")
+                    dir = Path(__file__).resolve().parent
+                    img_1: ImgData = {"src": str(dir / f"{input.filename1()}.png")}
+                    return img_1
+                
+            elif input.image_style() == "high_idx":
+                    for atom in mols[input.mol1()].GetAtoms():
+                        atom.SetProp('atomLabel', str(atom.GetIdx()))
+                    # Highlight atoms & bonds
+                    img = Draw.MolToImage(mols[input.mol_1()], 
                                             highlightAtoms = [int(n) for n in input.atom1().split(",")],
                                             highlightBonds = [int(n) for n in input.bond1().split(",")], 
                                             highlightColor = ColorConverter().to_rgb("aqua")
@@ -149,39 +177,10 @@ def server(input, output, session):
                     dir = Path(__file__).resolve().parent
                     img_1: ImgData = {"src": str(dir / f"{input.filename1()}.png")}
                     return img_1
-                
-                elif input.image_style() == "no_high_no_idx":
-                    Draw.MolToFile(mols[input.mol1()], f"{input.filename1_1()}.png")
-                    dir = Path(__file__).resolve().parent
-                    img_1: ImgData = {"src": str(dir / f"{input.filename1_1()}.png")}
-                    return img_1
-                
-                elif input.image_style() == "no_high_idx":
-                    for atom in mols[input.mol1()].GetAtoms():
-                        atom.SetProp('atomLabel', str(atom.GetIdx()))
-                    Draw.MolToFile(mols[input.mol1()], f"{input.filename1_2()}.png")
-                    dir = Path(__file__).resolve().parent
-                    img_1: ImgData = {"src": str(dir / f"{input.filename1_2()}.png")}
-                    return img_1
-                
-                elif input.image_style() == "high_idx":
-                    for atom in mols[input.mol1()].GetAtoms():
-                        atom.SetProp('atomLabel', str(atom.GetIdx()))
-                    # Highlight atoms & bonds
-                    img = Draw.MolToImage(mols[input.mol1()], 
-                                            highlightAtoms = [int(n) for n in input.atom1().split(",")],
-                                            highlightBonds = [int(n) for n in input.bond1().split(",")], 
-                                            highlightColor = ColorConverter().to_rgb("aqua")
-                                            ) 
-                    # Save image
-                    img.save(f"{input.filename1()}.png")
-                    # Show saved PNG file from selected compound
-                    dir = Path(__file__).resolve().parent
-                    img_1: ImgData = {"src": str(dir / f"{input.filename1()}.png")}
-                    return img_1
-            
-                else:
-                    return None
+       
+            else:
+                return None
+    
 
 
     @output
