@@ -5,8 +5,8 @@
 
 
 # TODO: 
-# To add shinyswatch theme
-# To add introduction of app - how to use, functions to view, save and look up compounds
+# To add introduction of app 
+# - how to use, features to view, save and look up compounds
 
 # Import libraries---
 import pandas as pd
@@ -19,6 +19,7 @@ from PIL import Image
 from matplotlib.colors import ColorConverter 
 from shiny import App, Inputs, Outputs, Session, render, ui, reactive
 from shiny.types import ImgData
+import shinyswatch
 
 
 
@@ -34,6 +35,7 @@ mols = list(mols)
 
 
 # Input--- 
+# ***Added features***
 # Added ui.navset_tab_card & ui.nav() to keep each of the 4 cpds in separate tabs! 
 # - refer to "Orbit simulation" example
 # Changed the merged PNG image from ui.row() to ui.column() to be in the right hand side of the space
@@ -44,17 +46,20 @@ mols = list(mols)
 # Added interactive dataframe beneath PNG image processing area
 # Added option to show atom indices in PNG images
 # Changed tabs
-# - 1 for non-indexed molecules & 1 for indexed molecules 
+# - 2 for non-indexed molecules & 2 for indexed molecules 
 # - both with option to turn on/off highlighting
+# - to allow quick comparison between unindexed & indexed molecules side-by-side
+# Added shinyswatch theme solar
 
 app_ui = ui.page_fluid(
+    shinyswatch.theme.solar(),
     ui.h4("Compound input selections"),
     ui.row(
         ui.column(
-            4,
+            5,
             ui.navset_tab_card(
                 ui.nav(
-                    "Unindexed",
+                    "Unindexed 1",
                     ui.input_numeric("mol1", "Select compound via index number:", 0, min = 0, max = 143),
                     ui.input_select("image_style1", "Choose substructure highlights:", 
                                     {"no_high": "Without highlights",
@@ -62,23 +67,44 @@ app_ui = ui.page_fluid(
                     ui.input_text_area("atom1", "Enter atom number to highlight:", placeholder = "e.g. 0, 1, 2, 3..."),
                     ui.input_text_area("bond1", "Enter bond number to highlight:", placeholder = "e.g. 0, 1, 2, 3..."),
                     ui.input_text("filename1", "File name for PNG image:"),
-                    # Add caption explaining everytime confirm button is clicked, 
-                    # a new PNG file will be saved with whatever file name was inputted above
-                    # Make desired selections before clicking on the confirm button with diff file names for each
-                    ui.input_action_button("btn1", "Save and view", class_= "btn"),
+                    ui.input_action_button("btn1", "Save and view", class_= "btn-success"),
                     ui.output_image("image1")
                 ),
                 ui.nav(
-                    "Indexed",
+                    "Indexed 2",
                     ui.input_numeric("mol2", "Select compound via index number:", 0, min = 0, max = 143),
                     ui.input_select("image_style2", "Choose substructure highlights:", 
-                                    {"no_high": "Without highlights ", 
+                                    {"no_high": "Without highlights", 
                                      "high": "With highlights"}),
-                    ui.input_text_area("atom2", "Enter atom number to highlight", placeholder = "e.g. 0, 1, 2, 3..."),
+                    ui.input_text_area("atom2", "Enter atom number to highlight:", placeholder = "e.g. 0, 1, 2, 3..."),
                     ui.input_text_area("bond2", "Enter bond number to highlight:", placeholder = "e.g. 0, 1, 2, 3..."),
                     ui.input_text("filename2", "File name for PNG image:"),
-                    ui.input_action_button("btn2", "Save and view", class_= "btn"),
+                    ui.input_action_button("btn2", "Save and view", class_= "btn-success"),
                     ui.output_image("image2")
+                ),
+                ui.nav(
+                    "Unindexed 3",
+                    ui.input_numeric("mol3", "Select compound via index number:", 0, min = 0, max = 143),
+                    ui.input_select("image_style3", "Choose substructure highlights:", 
+                                    {"no_high": "Without highlights",
+                                     "high": "With highlights"}),
+                    ui.input_text_area("atom3", "Enter atom number to highlight:", placeholder = "e.g. 0, 1, 2, 3..."),
+                    ui.input_text_area("bond3", "Enter bond number to highlight:", placeholder = "e.g. 0, 1, 2, 3..."),
+                    ui.input_text("filename3", "File name for PNG image:"),
+                    ui.input_action_button("btn3", "Save and view", class_= "btn-success"),
+                    ui.output_image("image3")
+                ),
+                ui.nav(
+                    "Indexed 4",
+                    ui.input_numeric("mol4", "Select compound via index number:", 0, min = 0, max = 143),
+                    ui.input_select("image_style4", "Choose substructure highlights:", 
+                                    {"no_high": "Without highlights", 
+                                     "high": "With highlights"}),
+                    ui.input_text_area("atom4", "Enter atom number to highlight:", placeholder = "e.g. 0, 1, 2, 3..."),
+                    ui.input_text_area("bond4", "Enter bond number to highlight:", placeholder = "e.g. 0, 1, 2, 3..."),
+                    ui.input_text("filename4", "File name for PNG image:"),
+                    ui.input_action_button("btn4", "Save and view", class_= "btn-success"),
+                    ui.output_image("image4")
                 ),
             )
         ),
@@ -101,7 +127,7 @@ def server(input, output, session):
     @output
     @render.image
     @reactive.Calc
-    # Function to show unindexed compound as PNG image
+    # Function to show unindexed compound as PNG image (file 1)
     def image1():
 
         input.btn1()
@@ -136,7 +162,7 @@ def server(input, output, session):
     @output
     @render.image
     @reactive.Calc
-    # Function to show indexed compound as PNG image
+    # Function to show indexed compound as PNG image (file 2)
     def image2():
 
         input.btn2()
@@ -166,6 +192,77 @@ def server(input, output, session):
                 dir = Path(__file__).resolve().parent
                 img_2: ImgData = {"src": str(dir / f"{input.filename2()}.png")}
                 return img_2
+            
+            else:
+                return None
+            
+    @output
+    @render.image
+    @reactive.Calc
+    # Function to show unindexed compound as PNG image (file 3)
+    def image3():
+
+        input.btn3()
+
+        with reactive.isolate():
+
+            if input.image_style3() == "high":
+                    # Highlight atoms & bonds
+                    img = Draw.MolToImage(mols[input.mol3()], 
+                                          highlightAtoms = [int(n) for n in input.atom3().split(",")],
+                                          highlightBonds = [int(n) for n in input.bond3().split(",")], 
+                                          highlightColor = ColorConverter().to_rgb("aqua")
+                                          ) 
+                    # Save image
+                    img.save(f"{input.filename3()}.png")
+                    # Show saved PNG file from selected compound
+                    dir = Path(__file__).resolve().parent
+                    img_3: ImgData = {"src": str(dir / f"{input.filename3()}.png")}
+                    return img_3
+                
+            elif input.image_style3() == "no_high":
+                    Draw.MolToFile(mols[input.mol3()], f"{input.filename3()}.png")
+                    dir = Path(__file__).resolve().parent
+                    img_3: ImgData = {"src": str(dir / f"{input.filename3()}.png")}
+                    return img_3
+       
+            else:
+                return None
+
+
+    @output
+    @render.image
+    @reactive.Calc
+    # Function to show indexed compound as PNG image (file 4)
+    def image4():
+
+        input.btn4()
+
+        with reactive.isolate():
+
+            if input.image_style4() == "no_high":
+                for atom in mols[input.mol4()].GetAtoms():
+                    atom.SetProp('atomLabel', str(atom.GetIdx()))
+                Draw.MolToFile(mols[input.mol4()], f"{input.filename4()}.png")
+                dir = Path(__file__).resolve().parent
+                img_4: ImgData = {"src": str(dir / f"{input.filename4()}.png")}
+                return img_4
+            
+            elif input.image_style4() == "high":
+                for atom in mols[input.mol4()].GetAtoms():
+                    atom.SetProp('atomLabel', str(atom.GetIdx()))
+                # Highlight atoms & bonds
+                img = Draw.MolToImage(mols[input.mol4()], 
+                                        highlightAtoms = [int(n) for n in input.atom4().split(",")],
+                                        highlightBonds = [int(n) for n in input.bond4().split(",")], 
+                                        highlightColor = ColorConverter().to_rgb("aqua")
+                                        ) 
+                # Save image
+                img.save(f"{input.filename4()}.png")
+                # Show saved PNG file from selected compound
+                dir = Path(__file__).resolve().parent
+                img_4: ImgData = {"src": str(dir / f"{input.filename4()}.png")}
+                return img_4
             
             else:
                 return None
