@@ -54,34 +54,18 @@ mols = list(mols)
 
 app_ui = ui.page_fluid(
     shinyswatch.theme.solar(),
-    ui.h4("Small molecule visualisation web application"),
+    {"class": "col-lg-15 py-4 mx-auto text-left"},
+    ui.h3("Small molecule visualiser - Molviz"),
     ui.row(
         ui.p(
              """
-             This is a Shiny for Python app for viewing and saving 2D images of small molecules of interests. 
+             This is a Shiny for Python web application for viewing and saving 2D images of small molecules of interests. 
              The main backbone libraries used are RDKit and Datamol.
-             The data source is based on the compound data in a dataframe format with molecular representations such as SMILES.
-             
-             2D images of molecules can be saved as PNG files via MolToFile(). 
-             Atoms & bonds highlighting are done via MolToImage().
-             An option to save each of the four images as a merged version in a grid format
-             (1 - top left, 2 - top right, 3 - bottom left & 4 - bottom right).
-             A final feature is the compound name search function in the interactive dataframe at the bottom of the app.
+             The data source is based on compound data that included molecular representations such as SMILES in a dataframe.
+             For demonstration purpose, the example provided here was a set of anti-infectives sourced from ChEMBL version _.
+             Users can generate similar app by using own compound data (e.g. compound activity data for structure-activity relationship work) with the code available.
              """
         ),
-            ui.tags.ul(
-            ui.tags.li(
-                """
-                Two types of PNG images are available: with atom index (atoms labelled with numbers), or without (native skeletal forms).""" 
-            ), 
-            ui.tags.li(
-                """
-                Text to be written."""
-            ), 
-            ui.tags.li(
-                """
-                Text to be written."""
-            )),
         ui.column(
             4,
             ui.navset_tab_card(
@@ -137,6 +121,28 @@ app_ui = ui.page_fluid(
         ),
         ui.column(
             6, 
+            ui.tags.ul(
+            ui.tags.li(
+                """
+                Two types of PNG images are available: Indexed (atoms labelled with numbers), or Unindexed (native skeletal forms without atoms labelled)""" 
+            ), 
+            ui.tags.li(
+                """
+                Atoms & bonds highlighting available via MolToImage()"""
+            ),
+            ui.tags.li(
+                """
+                2D images of molecules can be saved as PNG files via MolToFile()"""
+            ), 
+            ui.tags.li(
+                """
+                An option to save each of the four images as a merged version in a grid format
+                with image saved in this order first - top left, second - top right, third - bottom left and lastly - bottom right)"""
+            ), 
+            ui.tags.li(
+                """
+                Compound name search is available in the interactive dataframe beneath the image area"""
+            )),
             ui.input_text("merge_filename", "File name for merged PNG images:"),
             ui.input_action_button("btn_merge", "Confirm", class_="btn"),
             ui.output_image("merge_image"),
