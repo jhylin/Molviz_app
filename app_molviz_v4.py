@@ -60,7 +60,8 @@ app_ui = ui.page_fluid(
              """
              This is a Shiny for Python app for viewing and saving 2D images of small molecules of interests. 
              The main backbone libraries used are RDKit and Datamol.
-             Two types of PNG images are available: with atom index (atoms labelled with numbers), or without (native skeletal forms).
+             The data source is based on the compound data in a dataframe format with molecular representations such as SMILES.
+             
              2D images of molecules can be saved as PNG files via MolToFile(). 
              Atoms & bonds highlighting are done via MolToImage().
              An option to save each of the four images as a merged version in a grid format
@@ -68,6 +69,19 @@ app_ui = ui.page_fluid(
              A final feature is the compound name search function in the interactive dataframe at the bottom of the app.
              """
         ),
+            ui.tags.ul(
+            ui.tags.li(
+                """
+                Two types of PNG images are available: with atom index (atoms labelled with numbers), or without (native skeletal forms).""" 
+            ), 
+            ui.tags.li(
+                """
+                Text to be written."""
+            ), 
+            ui.tags.li(
+                """
+                Text to be written."""
+            )),
         ui.column(
             4,
             ui.navset_tab_card(
