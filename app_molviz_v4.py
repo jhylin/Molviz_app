@@ -204,7 +204,7 @@ def server(input, output, session):
 
             if input.image_style2() == "no_high":
                 for atom in mols[input.mol2()].GetAtoms():
-                    atom.SetProp('atomLabel', str(atom.GetIdx()))
+                    atom.SetProp('atomNote', str(atom.GetIdx()))
                 Draw.MolToFile(mols[input.mol2()], f"{input.filename2()}.png")
                 dir = Path(__file__).resolve().parent
                 img_2: ImgData = {"src": str(dir / f"{input.filename2()}.png")}
@@ -212,7 +212,7 @@ def server(input, output, session):
             
             elif input.image_style2() == "high":
                 for atom in mols[input.mol2()].GetAtoms():
-                    atom.SetProp('atomLabel', str(atom.GetIdx()))
+                    atom.SetProp('atomNote', str(atom.GetIdx()))
                 # Highlight atoms & bonds
                 img = Draw.MolToImage(mols[input.mol2()], 
                                         highlightAtoms = [int(n) for n in input.atom2().split(",")],
@@ -275,7 +275,7 @@ def server(input, output, session):
 
             if input.image_style4() == "no_high":
                 for atom in mols[input.mol4()].GetAtoms():
-                    atom.SetProp('atomLabel', str(atom.GetIdx()))
+                    atom.SetProp('atomNote', str(atom.GetIdx()))
                 Draw.MolToFile(mols[input.mol4()], f"{input.filename4()}.png")
                 dir = Path(__file__).resolve().parent
                 img_4: ImgData = {"src": str(dir / f"{input.filename4()}.png")}
@@ -283,7 +283,7 @@ def server(input, output, session):
             
             elif input.image_style4() == "high":
                 for atom in mols[input.mol4()].GetAtoms():
-                    atom.SetProp('atomLabel', str(atom.GetIdx()))
+                    atom.SetProp('atomNote', str(atom.GetIdx()))
                 # Highlight atoms & bonds
                 img = Draw.MolToImage(mols[input.mol4()], 
                                         highlightAtoms = [int(n) for n in input.atom4().split(",")],
