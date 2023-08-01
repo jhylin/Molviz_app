@@ -155,6 +155,16 @@ type(mols)
 # image_test = Image.open("anti-inf.png")
 # image_test.show()
 
+# A slightly different version adding atom labels
+# Better image resolution
+# mol = Chem.MolFromSmiles('c1ccccc1O')
+# d = rdMolDraw2D.MolDraw2DCairo(250, 200)
+# d.drawOptions().addAtomIndices = True
+# d.DrawMolecule(mol)
+# d.FinishDrawing()
+# with open('atom_annotation_1.png', 'wb') as f:   
+#     f.write(d.GetDrawingText())
+
 
 # --RDKit SVG molecule drawer - produces a long string of SVG data
 # drawer = rdMolDraw2D.MolDraw2DSVG(2000,2000,300,300) 
@@ -272,15 +282,15 @@ type(mols)
 # mol1
 
 # Function for labelling atom indices for any single molecule inside a series of RDKit molecules
-def get_atom_index(i):
-    mol = mols[i]
-    for atom in mol.GetAtoms():
-        # Decided not too add "+1" since native atom indexing starts at 0 due to using Python!
-        # So the atom index will start at 0 (= first atom)
-        atom.SetProp('atomLabel', str(atom.GetIdx()))
-    return mol
+# def get_atom_index(i):
+#     mol = mols[i]
+#     for atom in mol.GetAtoms():
+#         # Decided not too add "+1" since native atom indexing starts at 0 due to using Python!
+#         # So the atom index will start at 0 (= first atom)
+#         atom.SetProp('atomLabel', str(atom.GetIdx()))
+#     return mol
 
-get_atom_index(0)
-get_atom_index(1)
-get_atom_index(2)
-get_atom_index(4)
+# get_atom_index(0)
+# get_atom_index(1)
+# get_atom_index(2)
+# get_atom_index(4)

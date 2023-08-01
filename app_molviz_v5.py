@@ -2,14 +2,9 @@
 # 2D images of molecules saved as PNG files via MolToFile() 
 # Atoms & bonds highlighting via MolToImage() 
 # Select atom & bond highlighting (on or off) with or without atom indices
-# Added texts
-# Partially using "atomNote" & "atomLabel"
+# Changed to "atomNote" for atom labelling
 
 
-# TODO: 
-# To add introduction of app 
-# - how to use, features to view, save and look up compounds
-# - split sections: Panel to add compound, panel to view merged image, df to search below
 
 # Import libraries---
 import pandas as pd
@@ -72,49 +67,49 @@ app_ui = ui.page_fluid(
             4,
             ui.navset_tab_card(
                 ui.nav(
-                    "Unindexed - 1",
-                    ui.input_numeric("mol1", "Select compound via index number:", 0, min = 0, max = 143),
-                    ui.input_select("image_style1", "Choose substructure highlights:", 
+                    "1",
+                    ui.input_numeric("mol1", "Select compound via index number from dataframe:", 0, min = 0, max = 143),
+                    ui.input_select("image_style1", "With or without substructure highlights:", 
                                     {"no_high": "Without highlights",
                                      "high": "With highlights"}),
-                    ui.input_text_area("atom1", "Enter atom number to highlight:", placeholder = "e.g. 0, 1, 2, 3..."),
-                    ui.input_text_area("bond1", "Enter bond number to highlight:", placeholder = "e.g. 0, 1, 2, 3..."),
+                    ui.input_text_area("atom1", "Enter atom numbers to highlight:", placeholder = "e.g. 0, 1, 2, 3..."),
+                    ui.input_text_area("bond1", "Enter bond numbers to highlight:", placeholder = "e.g. 0, 1, 2, 3..."),
                     ui.input_text("filename1", "File name for PNG image:"),
                     ui.input_action_button("btn1", "Save and view", class_= "btn-success"),
                     ui.output_image("image1")
                 ),
                 ui.nav(
-                    "Indexed - 2",
-                    ui.input_numeric("mol2", "Select compound via index number:", 0, min = 0, max = 143),
-                    ui.input_select("image_style2", "Choose substructure highlights:", 
+                    "2",
+                    ui.input_numeric("mol2", "Select compound via index number from dataframe:", 0, min = 0, max = 143),
+                    ui.input_select("image_style2", "With or without substructure highlights:", 
                                     {"no_high": "Without highlights", 
                                      "high": "With highlights"}),
-                    ui.input_text_area("atom2", "Enter atom number to highlight:", placeholder = "e.g. 0, 1, 2, 3..."),
-                    ui.input_text_area("bond2", "Enter bond number to highlight:", placeholder = "e.g. 0, 1, 2, 3..."),
+                    ui.input_text_area("atom2", "Enter atom numbers to highlight:", placeholder = "e.g. 0, 1, 2, 3..."),
+                    ui.input_text_area("bond2", "Enter bond numbers to highlight:", placeholder = "e.g. 0, 1, 2, 3..."),
                     ui.input_text("filename2", "File name for PNG image:"),
                     ui.input_action_button("btn2", "Save and view", class_= "btn-success"),
                     ui.output_image("image2")
                 ),
                 ui.nav(
-                    "Unindexed - 3",
-                    ui.input_numeric("mol3", "Select compound via index number:", 0, min = 0, max = 143),
-                    ui.input_select("image_style3", "Choose substructure highlights:", 
+                    "3",
+                    ui.input_numeric("mol3", "Select compound via index number from dataframe:", 0, min = 0, max = 143),
+                    ui.input_select("image_style3", "With or without substructure highlights:", 
                                     {"no_high": "Without highlights",
                                      "high": "With highlights"}),
-                    ui.input_text_area("atom3", "Enter atom number to highlight:", placeholder = "e.g. 0, 1, 2, 3..."),
-                    ui.input_text_area("bond3", "Enter bond number to highlight:", placeholder = "e.g. 0, 1, 2, 3..."),
+                    ui.input_text_area("atom3", "Enter atom numbers to highlight:", placeholder = "e.g. 0, 1, 2, 3..."),
+                    ui.input_text_area("bond3", "Enter bond numbers to highlight:", placeholder = "e.g. 0, 1, 2, 3..."),
                     ui.input_text("filename3", "File name for PNG image:"),
                     ui.input_action_button("btn3", "Save and view", class_= "btn-success"),
                     ui.output_image("image3")
                 ),
                 ui.nav(
-                    "Indexed - 4",
-                    ui.input_numeric("mol4", "Select compound via index number:", 0, min = 0, max = 143),
-                    ui.input_select("image_style4", "Choose substructure highlights:", 
+                    "4",
+                    ui.input_numeric("mol4", "Select compound via index number from dataframe:", 0, min = 0, max = 143),
+                    ui.input_select("image_style4", "With or without substructure highlights:", 
                                     {"no_high": "Without highlights", 
                                      "high": "With highlights"}),
-                    ui.input_text_area("atom4", "Enter atom number to highlight:", placeholder = "e.g. 0, 1, 2, 3..."),
-                    ui.input_text_area("bond4", "Enter bond number to highlight:", placeholder = "e.g. 0, 1, 2, 3..."),
+                    ui.input_text_area("atom4", "Enter atom numbers to highlight:", placeholder = "e.g. 0, 1, 2, 3..."),
+                    ui.input_text_area("bond4", "Enter bond numbers to highlight:", placeholder = "e.g. 0, 1, 2, 3..."),
                     ui.input_text("filename4", "File name for PNG image:"),
                     ui.input_action_button("btn4", "Save and view", class_= "btn-success"),
                     ui.output_image("image4")
@@ -126,7 +121,7 @@ app_ui = ui.page_fluid(
             ui.tags.ul(
             ui.tags.li(
                 """
-                Two types of PNG images are available: Indexed (atoms labelled with numbers), or Unindexed (native skeletal forms without atoms labelled)""" 
+                All compounds have atom number labels added.""" 
             ), 
             ui.tags.li(
                 """
@@ -139,7 +134,7 @@ app_ui = ui.page_fluid(
             ui.tags.li(
                 """
                 An option to save each of the four images as a merged version in a grid format
-                with image saved in this order first - top left, second - top right, third - bottom left and lastly - bottom right)"""
+                with image saved in this order - top left (1), top right (2), bottom left (3) and bottom right (4)"""
             ), 
             ui.tags.li(
                 """
@@ -162,7 +157,7 @@ def server(input, output, session):
     @output
     @render.image
     @reactive.Calc
-    # Function to show unindexed compound as PNG image (file 1)
+    # Function to save & show 1st compound as PNG image (file 1)
     def image1():
 
         input.btn1()
@@ -170,6 +165,9 @@ def server(input, output, session):
         with reactive.isolate():
 
             if input.image_style1() == "high":
+                    # Add atom labels
+                    for atom in mols[input.mol1()].GetAtoms():
+                        atom.SetProp('atomNote', str(atom.GetIdx()))
                     # Highlight atoms & bonds
                     img = Draw.MolToImage(mols[input.mol1()], 
                                           highlightAtoms = [int(n) for n in input.atom1().split(",")],
@@ -184,6 +182,9 @@ def server(input, output, session):
                     return img_1
                 
             elif input.image_style1() == "no_high":
+                    # Add atom labels
+                    for atom in mols[input.mol1()].GetAtoms():
+                        atom.SetProp('atomNote', str(atom.GetIdx()))
                     Draw.MolToFile(mols[input.mol1()], f"{input.filename1()}.png")
                     dir = Path(__file__).resolve().parent
                     img_1: ImgData = {"src": str(dir / f"{input.filename1()}.png")}
@@ -197,7 +198,7 @@ def server(input, output, session):
     @output
     @render.image
     @reactive.Calc
-    # Function to show indexed compound as PNG image (file 2)
+    # Function to save & show 2nd compound as PNG image (file 2)
     def image2():
 
         input.btn2()
@@ -205,6 +206,7 @@ def server(input, output, session):
         with reactive.isolate():
 
             if input.image_style2() == "no_high":
+                # Add atom labels
                 for atom in mols[input.mol2()].GetAtoms():
                     atom.SetProp('atomNote', str(atom.GetIdx()))
                 Draw.MolToFile(mols[input.mol2()], f"{input.filename2()}.png")
@@ -213,6 +215,7 @@ def server(input, output, session):
                 return img_2
             
             elif input.image_style2() == "high":
+                # Add atom labels
                 for atom in mols[input.mol2()].GetAtoms():
                     atom.SetProp('atomNote', str(atom.GetIdx()))
                 # Highlight atoms & bonds
@@ -234,7 +237,7 @@ def server(input, output, session):
     @output
     @render.image
     @reactive.Calc
-    # Function to show unindexed compound as PNG image (file 3)
+    # Function to save & show 3rd compound as PNG image (file 3)
     def image3():
 
         input.btn3()
@@ -242,6 +245,9 @@ def server(input, output, session):
         with reactive.isolate():
 
             if input.image_style3() == "high":
+                    # Add atom labels
+                    for atom in mols[input.mol3()].GetAtoms():
+                        atom.SetProp('atomNote', str(atom.GetIdx()))
                     # Highlight atoms & bonds
                     img = Draw.MolToImage(mols[input.mol3()], 
                                           highlightAtoms = [int(n) for n in input.atom3().split(",")],
@@ -256,6 +262,9 @@ def server(input, output, session):
                     return img_3
                 
             elif input.image_style3() == "no_high":
+                    # Add atom labels
+                    for atom in mols[input.mol3()].GetAtoms():
+                        atom.SetProp('atomNote', str(atom.GetIdx()))
                     Draw.MolToFile(mols[input.mol3()], f"{input.filename3()}.png")
                     dir = Path(__file__).resolve().parent
                     img_3: ImgData = {"src": str(dir / f"{input.filename3()}.png")}
@@ -268,7 +277,7 @@ def server(input, output, session):
     @output
     @render.image
     @reactive.Calc
-    # Function to show indexed compound as PNG image (file 4)
+    # Function to save & show 4th compound as PNG image (file 4)
     def image4():
 
         input.btn4()
@@ -276,6 +285,7 @@ def server(input, output, session):
         with reactive.isolate():
 
             if input.image_style4() == "no_high":
+                # Add atom labels
                 for atom in mols[input.mol4()].GetAtoms():
                     atom.SetProp('atomNote', str(atom.GetIdx()))
                 Draw.MolToFile(mols[input.mol4()], f"{input.filename4()}.png")
@@ -284,6 +294,7 @@ def server(input, output, session):
                 return img_4
             
             elif input.image_style4() == "high":
+                # Add atom labels
                 for atom in mols[input.mol4()].GetAtoms():
                     atom.SetProp('atomNote', str(atom.GetIdx()))
                 # Highlight atoms & bonds
