@@ -7,6 +7,7 @@
 # TODO: 
 # To add introduction of app 
 # - how to use, features to view, save and look up compounds
+# - split sections: Panel to add compound, panel to view merged image, df to search below
 
 # Import libraries---
 import pandas as pd
@@ -53,13 +54,25 @@ mols = list(mols)
 
 app_ui = ui.page_fluid(
     shinyswatch.theme.solar(),
-    ui.h4("Compound input selections"),
+    ui.h4("Small molecule visualisation web application"),
     ui.row(
+        ui.p(
+             """
+             This is a Shiny for Python app for viewing and saving 2D images of small molecules of interests. 
+             The main backbone libraries used are RDKit and Datamol.
+             Two types of PNG images are available: with atom index (atoms labelled with numbers), or without (native skeletal forms).
+             2D images of molecules can be saved as PNG files via MolToFile(). 
+             Atoms & bonds highlighting are done via MolToImage().
+             An option to save each of the four images as a merged version in a grid format
+             (1 - top left, 2 - top right, 3 - bottom left & 4 - bottom right).
+             A final feature is the compound name search function in the interactive dataframe at the bottom of the app.
+             """
+        ),
         ui.column(
-            5,
+            4,
             ui.navset_tab_card(
                 ui.nav(
-                    "Unindexed 1",
+                    "Unindexed - 1",
                     ui.input_numeric("mol1", "Select compound via index number:", 0, min = 0, max = 143),
                     ui.input_select("image_style1", "Choose substructure highlights:", 
                                     {"no_high": "Without highlights",
@@ -71,7 +84,7 @@ app_ui = ui.page_fluid(
                     ui.output_image("image1")
                 ),
                 ui.nav(
-                    "Indexed 2",
+                    "Indexed - 2",
                     ui.input_numeric("mol2", "Select compound via index number:", 0, min = 0, max = 143),
                     ui.input_select("image_style2", "Choose substructure highlights:", 
                                     {"no_high": "Without highlights", 
@@ -83,7 +96,7 @@ app_ui = ui.page_fluid(
                     ui.output_image("image2")
                 ),
                 ui.nav(
-                    "Unindexed 3",
+                    "Unindexed - 3",
                     ui.input_numeric("mol3", "Select compound via index number:", 0, min = 0, max = 143),
                     ui.input_select("image_style3", "Choose substructure highlights:", 
                                     {"no_high": "Without highlights",
@@ -95,7 +108,7 @@ app_ui = ui.page_fluid(
                     ui.output_image("image3")
                 ),
                 ui.nav(
-                    "Indexed 4",
+                    "Indexed - 4",
                     ui.input_numeric("mol4", "Select compound via index number:", 0, min = 0, max = 143),
                     ui.input_select("image_style4", "Choose substructure highlights:", 
                                     {"no_high": "Without highlights", 
