@@ -56,9 +56,12 @@ mols = list(mols)
 # Added shinyswatch theme solar
 
 app_ui = ui.page_fluid(
-    shinyswatch.theme.solar(),
+    shinyswatch.theme.cyborg(),
     {"class": "col-lg-20 py-4 mx-auto text-left"},
-    ui.h3("Small molecule visualiser - Molviz"),
+    ui.div(
+        {"style": "font-weight: bold;"},
+        ui.h4("Molecule visualiser - Molviz"),
+    ),
     ui.row(
         ui.column(
             12,
@@ -71,6 +74,7 @@ app_ui = ui.page_fluid(
                     The data source is based on compound data that included molecular representations such as SMILES in a dataframe.
                     For demonstration purpose, the example provided here was a set of anti-infectives sourced from ChEMBL version _.
                     Users can generate similar app by using own compound data (e.g. compound activity data for structure-activity relationship work) with the code available.
+                    Code & license available here - https://github.com/jhylin/Molviz_app.
                     """,
                 ),
             ),
@@ -144,10 +148,14 @@ app_ui = ui.page_fluid(
             ), 
             ),
             ui.input_text("merge_filename", "File name for merged PNG images:"),
-            ui.input_action_button("btn_merge", "Confirm", class_="btn"),
+            ui.input_action_button("btn_merge", "Confirm", class_="btn-success"),
             ui.output_image("merge_image"),
             ),
-            ui.h5("Interactive dataframe"),
+            ui.div(
+                {"class": "col-lg-15 py-4 mx-auto text-left"},
+                {"style": "font-weight: bold;"},
+                ui.h5("Interactive data table"),
+            ), 
             ui.page_fluid(
                 ui.HTML(DT(df))
                 )
@@ -219,6 +227,7 @@ def server(input, output, session):
     @output
     @render.image
     @reactive.Calc
+    @reactive.event(input.btn2)
     # Function to save & show 2nd compound as PNG image (file 2)
     def image2():
 
@@ -268,6 +277,7 @@ def server(input, output, session):
     @output
     @render.image
     @reactive.Calc
+    @reactive.event(input.btn3)
     # Function to save & show 3rd compound as PNG image (file 3)
     def image3():
 
@@ -318,6 +328,7 @@ def server(input, output, session):
     @output
     @render.image
     @reactive.Calc
+    @reactive.event(input.btn4)
     # Function to save & show 4th compound as PNG image (file 4)
     def image4():
 
