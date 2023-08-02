@@ -27,10 +27,8 @@ from shiny.types import ImgData
 import shinyswatch
 
 
-
-
 # Data source---
-# Using pre-processed and standardised data 
+# Using cleaned, pre-processed and standardised data 
 df = pd.read_csv("df_ai_cleaned.csv")
 # Avoid any changes to original dataset object by using .copy()
 df = df.copy()
@@ -59,18 +57,26 @@ mols = list(mols)
 
 app_ui = ui.page_fluid(
     shinyswatch.theme.solar(),
-    {"class": "col-lg-15 py-4 mx-auto text-left"},
+    {"class": "col-lg-20 py-4 mx-auto text-left"},
     ui.h3("Small molecule visualiser - Molviz"),
     ui.row(
-        ui.p(
-             """
-             This is a Shiny for Python web application for viewing and saving 2D images of small molecules of interests. 
-             The main backbone libraries used are RDKit and Datamol.
-             The data source is based on compound data that included molecular representations such as SMILES in a dataframe.
-             For demonstration purpose, the example provided here was a set of anti-infectives sourced from ChEMBL version _.
-             Users can generate similar app by using own compound data (e.g. compound activity data for structure-activity relationship work) with the code available.
-             """
-        ),
+        ui.column(
+            12,
+            ui.div(
+                {"class": "app-col"},
+                ui.p(
+                    """
+                    This is a Shiny for Python web application for viewing and saving 2D images of small molecules of interests. 
+                    The main backbone libraries used are RDKit and Datamol.
+                    The data source is based on compound data that included molecular representations such as SMILES in a dataframe.
+                    For demonstration purpose, the example provided here was a set of anti-infectives sourced from ChEMBL version _.
+                    Users can generate similar app by using own compound data (e.g. compound activity data for structure-activity relationship work) with the code available.
+                    """,
+                ),
+            ),
+        )
+    ),
+    ui.row(
         ui.column(
             5,
             ui.navset_tab_card(
@@ -129,33 +135,23 @@ app_ui = ui.page_fluid(
             ui.tags.ul(
             ui.tags.li(
                 """
-                All compounds have atom number labels added.""" 
+                2D images of molecules can be saved as PNG files, with atom indices shown"""
             ), 
             ui.tags.li(
                 """
-                Atoms & bonds highlighting available via MolToImage()"""
+                Four images can be saved as a merged grid image in this order, top left (1), top right (2), bottom left (3) and bottom right (4)
+                - numbering corresponds to the 4 tabs on the left"""
+            ), 
             ),
-            ui.tags.li(
-                """
-                2D images of molecules can be saved as PNG files via MolToFile()"""
-            ), 
-            ui.tags.li(
-                """
-                An option to save each of the four images as a merged version in a grid format
-                with image saved in this order - top left (1), top right (2), bottom left (3) and bottom right (4)"""
-            ), 
-            ui.tags.li(
-                """
-                Compound name search is available in the interactive dataframe beneath the image area"""
-            )),
             ui.input_text("merge_filename", "File name for merged PNG images:"),
             ui.input_action_button("btn_merge", "Confirm", class_="btn"),
             ui.output_image("merge_image"),
             ),
-        ui.row(
-            ui.page_fluid(ui.HTML(DT(df)))
-        )
-    ),
+            ui.h5("Interactive dataframe"),
+            ui.page_fluid(
+                ui.HTML(DT(df))
+                )
+            ),
 )
 
 
@@ -165,6 +161,9 @@ def server(input, output, session):
     @output
     @render.image
     @reactive.Calc
+    # Added reactive.event() to avoid triggering initial image when 1st opening the app 
+    # reaction will only occur after hitting action button
+    @reactive.event(input.btn1)
     # Function to save & show 1st compound as PNG image (file 1)
     def image1():
 
@@ -184,11 +183,11 @@ def server(input, output, session):
                 d.FinishDrawing()
                 cairosvg.svg2png(bytestring = d.GetDrawingText().encode(), 
                                  # dpi = dots per inch
-                                 dpi = 20000,
-                                 scale = 5, 
+                                 dpi = 50000,
+                                 scale = 10, 
                                  write_to = f"{input.filename1()}.png",
-                                 output_height = 470,
-                                 output_width = 470
+                                 output_height = 400,
+                                 output_width = 400
                                  )
                 dir = Path(__file__).resolve().parent
                 img_1: ImgData = {"src": str(dir / f"{input.filename1()}.png")}
@@ -201,11 +200,11 @@ def server(input, output, session):
                 d.FinishDrawing()
                 cairosvg.svg2png(bytestring = d.GetDrawingText().encode(), 
                                  # dpi = dots per inch
-                                 dpi = 15000,
-                                 scale = 5, 
+                                 dpi = 50000,
+                                 scale = 10, 
                                  write_to = f"{input.filename1()}.png",
-                                 output_height = 470,
-                                 output_width = 470
+                                 output_height = 400,
+                                 output_width = 400
                                  )
 
                 dir = Path(__file__).resolve().parent
@@ -233,12 +232,11 @@ def server(input, output, session):
                 d.DrawMolecule(mols[input.mol2()])
                 d.FinishDrawing()
                 cairosvg.svg2png(bytestring = d.GetDrawingText().encode(), 
-                                 # dpi = dots per inch
-                                 dpi = 15000,
+                                 dpi = 30000,
                                  scale = 5, 
                                  write_to = f"{input.filename2()}.png",
-                                 output_height = 470,
-                                 output_width = 470
+                                 output_height = 400,
+                                 output_width = 400
                                  )
                 dir = Path(__file__).resolve().parent
                 img_2: ImgData = {"src": str(dir / f"{input.filename2()}.png")}
@@ -254,12 +252,11 @@ def server(input, output, session):
                                )
                 d.FinishDrawing()
                 cairosvg.svg2png(bytestring = d.GetDrawingText().encode(), 
-                                 # dpi = dots per inch
-                                 dpi = 20000,
+                                 dpi = 30000,
                                  scale = 5, 
                                  write_to = f"{input.filename2()}.png",
-                                 output_height = 470,
-                                 output_width = 470
+                                 output_height = 400,
+                                 output_width = 400
                                  )
                 dir = Path(__file__).resolve().parent
                 img_2: ImgData = {"src": str(dir / f"{input.filename2()}.png")}
@@ -279,11 +276,41 @@ def server(input, output, session):
         with reactive.isolate():
 
             if input.image_style3() == "high":
+                d = rdMolDraw2D.MolDraw2DSVG(300, 300)
+                d.drawOptions().addAtomIndices = True
+                #d.drawOptions().addBondIndices = False
+                d.DrawMolecule(mols[input.mol3()], 
+                               highlightAtoms = [int(n) for n in input.atom3().split(",")], 
+                               highlightBonds = [int(n) for n in input.bond3().split(",")]
+                               )
+                d.FinishDrawing()
+                cairosvg.svg2png(bytestring = d.GetDrawingText().encode(), 
+                                 dpi = 30000,
+                                 scale = 5, 
+                                 write_to = f"{input.filename3()}.png",
+                                 output_height = 400,
+                                 output_width = 400
+                                 )
+                dir = Path(__file__).resolve().parent
+                img_3: ImgData = {"src": str(dir / f"{input.filename3()}.png")}
+                return img_3
 
-                
             elif input.image_style3() == "no_high":
+                d = rdMolDraw2D.MolDraw2DSVG(300, 300)
+                d.drawOptions().addAtomIndices = True
+                d.DrawMolecule(mols[input.mol3()])
+                d.FinishDrawing()
+                cairosvg.svg2png(bytestring = d.GetDrawingText().encode(), 
+                                 dpi = 30000,
+                                 scale = 5, 
+                                 write_to = f"{input.filename3()}.png",
+                                 output_height = 400,
+                                 output_width = 400
+                                 )
+                dir = Path(__file__).resolve().parent
+                img_3: ImgData = {"src": str(dir / f"{input.filename3()}.png")}
+                return img_3
 
-       
             else:
                 return None
 
@@ -299,9 +326,41 @@ def server(input, output, session):
         with reactive.isolate():
 
             if input.image_style4() == "no_high":
+                d = rdMolDraw2D.MolDraw2DSVG(300, 300)
+                d.drawOptions().addAtomIndices = True
+                d.DrawMolecule(mols[input.mol4()])
+                d.FinishDrawing()
+                cairosvg.svg2png(bytestring = d.GetDrawingText().encode(), 
+                                 dpi = 30000,
+                                 scale = 5, 
+                                 write_to = f"{input.filename4()}.png",
+                                 output_height = 400,
+                                 output_width = 400
+                                 )
+                dir = Path(__file__).resolve().parent
+                img_4: ImgData = {"src": str(dir / f"{input.filename4()}.png")}
+                return img_4
 
             
             elif input.image_style4() == "high":
+                d = rdMolDraw2D.MolDraw2DSVG(300, 300)
+                d.drawOptions().addAtomIndices = True
+                #d.drawOptions().addBondIndices = False
+                d.DrawMolecule(mols[input.mol4()], 
+                               highlightAtoms = [int(n) for n in input.atom4().split(",")], 
+                               highlightBonds = [int(n) for n in input.bond4().split(",")]
+                               )
+                d.FinishDrawing()
+                cairosvg.svg2png(bytestring = d.GetDrawingText().encode(), 
+                                 dpi = 30000,
+                                 scale = 5, 
+                                 write_to = f"{input.filename4()}.png",
+                                 output_height = 400,
+                                 output_width = 400
+                                 )
+                dir = Path(__file__).resolve().parent
+                img_4: ImgData = {"src": str(dir / f"{input.filename4()}.png")}
+                return img_4
 
             
             else:
@@ -323,13 +382,13 @@ def server(input, output, session):
             img4 = Image.open(f"{input.filename4()}.png")
 
             # Create a blank image template - (width, height)
-            blank_image = Image.new("RGB", (940, 940))
+            blank_image = Image.new("RGB", (800, 800))
 
             # Paste img1 to img4 together in a grid (top left, right, bottom left, right)
             blank_image.paste(img1, (0, 0))
-            blank_image.paste(img2, (470, 0))
-            blank_image.paste(img3, (0, 470))
-            blank_image.paste(img4, (470, 470))
+            blank_image.paste(img2, (400, 0))
+            blank_image.paste(img3, (0, 400))
+            blank_image.paste(img4, (400, 400))
 
             # Save combined/merged image as a new PNG file
             blank_image.save(f"{input.merge_filename()}.png")
