@@ -1,12 +1,15 @@
 # Shiny for Python app for viewing and saving 2D images of small molecules of interests
-# 2D images of molecules saved as PNG files via MolToFile() 
-# Atoms & bonds highlighting via MolToImage() 
-# Select atom & bond highlighting (on or off) with or without atom indices
-# Changed to "atomNote" for atom labelling
+
+# Current version: Improved image resolution by using rdMolDraw2D module, with highlighting option
+
+# old version: 2D images of molecules saved as PNG files via MolToFile() 
+# old version: Atoms & bonds highlighting via MolToImage() 
+# old version: Select atom & bond highlighting (on or off) with or without atom indices
+# old version: Changed to "atomNote" for atom labelling
+
 
 # TODO: 
-# Test a different rdMolDraw2D code to label atoms (?only for notebook env)
-# - appears to have better resolutions
+
 
 # Import libraries---
 import pandas as pd
@@ -17,12 +20,12 @@ import datamol as dm
 from itables.shiny import DT
 from pathlib import Path
 from PIL import Image
-from matplotlib.colors import ColorConverter 
+import cairosvg
+#from matplotlib.colors import ColorConverter 
 from shiny import App, Inputs, Outputs, Session, render, ui, reactive
 from shiny.types import ImgData
 import shinyswatch
-import io
-import cairosvg
+
 
 
 
@@ -69,7 +72,7 @@ app_ui = ui.page_fluid(
              """
         ),
         ui.column(
-            6,
+            5,
             ui.navset_tab_card(
                 ui.nav(
                     "1",
@@ -170,45 +173,44 @@ def server(input, output, session):
         with reactive.isolate():
 
             if input.image_style1() == "high":
-                    # Add atom labels
-                    for atom in mols[input.mol1()].GetAtoms():
-                        atom.SetProp('atomNote', str(atom.GetIdx()))
-                    # Highlight atoms & bonds
-                    img = Draw.MolToImage(mols[input.mol1()], 
-                                          highlightAtoms = [int(n) for n in input.atom1().split(",")],
-                                          highlightBonds = [int(n) for n in input.bond1().split(",")], 
-                                          highlightColor = ColorConverter().to_rgb("aqua")
-                                          ) 
-                    # Save image
-                    img.save(f"{input.filename1()}.png")
-                    # Show saved PNG file from selected compound
-                    dir = Path(__file__).resolve().parent
-                    img_1: ImgData = {"src": str(dir / f"{input.filename1()}.png")}
-                    return img_1
+                d = rdMolDraw2D.MolDraw2DSVG(300, 300)
+                d.drawOptions().addAtomIndices = True
+                # Potentially fills up white spaces too much if using bond indices
+                #d.drawOptions().addBondIndices = False
+                d.DrawMolecule(mols[input.mol1()], 
+                               highlightAtoms = [int(n) for n in input.atom1().split(",")], 
+                               highlightBonds = [int(n) for n in input.bond1().split(",")]
+                               )
+                d.FinishDrawing()
+                cairosvg.svg2png(bytestring = d.GetDrawingText().encode(), 
+                                 # dpi = dots per inch
+                                 dpi = 20000,
+                                 scale = 5, 
+                                 write_to = f"{input.filename1()}.png",
+                                 output_height = 470,
+                                 output_width = 470
+                                 )
+                dir = Path(__file__).resolve().parent
+                img_1: ImgData = {"src": str(dir / f"{input.filename1()}.png")}
+                return img_1
                 
             elif input.image_style1() == "no_high":
-                    
-                    d = rdMolDraw2D.MolDraw2DSVG(300, 300)
-                    d.drawOptions().addAtomIndices = True
-                    d.DrawMolecule(mols[input.mol1()])
-                    d.FinishDrawing()
-                    cairosvg.svg2png(bytestring = d.GetDrawingText().encode(), 
-                                    # dpi = dots per inch
-                                     dpi = 15000,
-                                     scale = 12, 
-                                     write_to = f"{input.filename1()}.png",
-                                     output_height = 500,
-                                     output_width = 500
-                                     )
+                d = rdMolDraw2D.MolDraw2DSVG(300, 300)
+                d.drawOptions().addAtomIndices = True
+                d.DrawMolecule(mols[input.mol1()])
+                d.FinishDrawing()
+                cairosvg.svg2png(bytestring = d.GetDrawingText().encode(), 
+                                 # dpi = dots per inch
+                                 dpi = 15000,
+                                 scale = 5, 
+                                 write_to = f"{input.filename1()}.png",
+                                 output_height = 470,
+                                 output_width = 470
+                                 )
 
-
-                    # Add atom labels
-                    # for atom in mols[input.mol1()].GetAtoms():
-                    #     atom.SetProp('atomNote', str(atom.GetIdx()))
-                    #Draw.MolToFile(mols[input.mol1()], f"{input.filename1()}.png")
-                    dir = Path(__file__).resolve().parent
-                    img_1: ImgData = {"src": str(dir / f"{input.filename1()}.png")}
-                    return img_1
+                dir = Path(__file__).resolve().parent
+                img_1: ImgData = {"src": str(dir / f"{input.filename1()}.png")}
+                return img_1
        
             else:
                 return None
@@ -226,27 +228,39 @@ def server(input, output, session):
         with reactive.isolate():
 
             if input.image_style2() == "no_high":
-                # Add atom labels
-                for atom in mols[input.mol2()].GetAtoms():
-                    atom.SetProp('atomNote', str(atom.GetIdx()))
-                Draw.MolToFile(mols[input.mol2()], f"{input.filename2()}.png")
+                d = rdMolDraw2D.MolDraw2DSVG(300, 300)
+                d.drawOptions().addAtomIndices = True
+                d.DrawMolecule(mols[input.mol2()])
+                d.FinishDrawing()
+                cairosvg.svg2png(bytestring = d.GetDrawingText().encode(), 
+                                 # dpi = dots per inch
+                                 dpi = 15000,
+                                 scale = 5, 
+                                 write_to = f"{input.filename2()}.png",
+                                 output_height = 470,
+                                 output_width = 470
+                                 )
                 dir = Path(__file__).resolve().parent
                 img_2: ImgData = {"src": str(dir / f"{input.filename2()}.png")}
                 return img_2
             
             elif input.image_style2() == "high":
-                # Add atom labels
-                for atom in mols[input.mol2()].GetAtoms():
-                    atom.SetProp('atomNote', str(atom.GetIdx()))
-                # Highlight atoms & bonds
-                img = Draw.MolToImage(mols[input.mol2()], 
-                                        highlightAtoms = [int(n) for n in input.atom2().split(",")],
-                                        highlightBonds = [int(n) for n in input.bond2().split(",")], 
-                                        highlightColor = ColorConverter().to_rgb("aqua")
-                                        ) 
-                # Save image
-                img.save(f"{input.filename2()}.png")
-                # Show saved PNG file from selected compound
+                d = rdMolDraw2D.MolDraw2DSVG(300, 300)
+                d.drawOptions().addAtomIndices = True
+                #d.drawOptions().addBondIndices = False
+                d.DrawMolecule(mols[input.mol2()], 
+                               highlightAtoms = [int(n) for n in input.atom2().split(",")], 
+                               highlightBonds = [int(n) for n in input.bond2().split(",")]
+                               )
+                d.FinishDrawing()
+                cairosvg.svg2png(bytestring = d.GetDrawingText().encode(), 
+                                 # dpi = dots per inch
+                                 dpi = 20000,
+                                 scale = 5, 
+                                 write_to = f"{input.filename2()}.png",
+                                 output_height = 470,
+                                 output_width = 470
+                                 )
                 dir = Path(__file__).resolve().parent
                 img_2: ImgData = {"src": str(dir / f"{input.filename2()}.png")}
                 return img_2
@@ -265,30 +279,10 @@ def server(input, output, session):
         with reactive.isolate():
 
             if input.image_style3() == "high":
-                    # Add atom labels
-                    for atom in mols[input.mol3()].GetAtoms():
-                        atom.SetProp('atomNote', str(atom.GetIdx()))
-                    # Highlight atoms & bonds
-                    img = Draw.MolToImage(mols[input.mol3()], 
-                                          highlightAtoms = [int(n) for n in input.atom3().split(",")],
-                                          highlightBonds = [int(n) for n in input.bond3().split(",")], 
-                                          highlightColor = ColorConverter().to_rgb("aqua")
-                                          ) 
-                    # Save image
-                    img.save(f"{input.filename3()}.png")
-                    # Show saved PNG file from selected compound
-                    dir = Path(__file__).resolve().parent
-                    img_3: ImgData = {"src": str(dir / f"{input.filename3()}.png")}
-                    return img_3
+
                 
             elif input.image_style3() == "no_high":
-                    # Add atom labels
-                    for atom in mols[input.mol3()].GetAtoms():
-                        atom.SetProp('atomNote', str(atom.GetIdx()))
-                    Draw.MolToFile(mols[input.mol3()], f"{input.filename3()}.png")
-                    dir = Path(__file__).resolve().parent
-                    img_3: ImgData = {"src": str(dir / f"{input.filename3()}.png")}
-                    return img_3
+
        
             else:
                 return None
@@ -305,30 +299,10 @@ def server(input, output, session):
         with reactive.isolate():
 
             if input.image_style4() == "no_high":
-                # Add atom labels
-                for atom in mols[input.mol4()].GetAtoms():
-                    atom.SetProp('atomNote', str(atom.GetIdx()))
-                Draw.MolToFile(mols[input.mol4()], f"{input.filename4()}.png")
-                dir = Path(__file__).resolve().parent
-                img_4: ImgData = {"src": str(dir / f"{input.filename4()}.png")}
-                return img_4
+
             
             elif input.image_style4() == "high":
-                # Add atom labels
-                for atom in mols[input.mol4()].GetAtoms():
-                    atom.SetProp('atomNote', str(atom.GetIdx()))
-                # Highlight atoms & bonds
-                img = Draw.MolToImage(mols[input.mol4()], 
-                                        highlightAtoms = [int(n) for n in input.atom4().split(",")],
-                                        highlightBonds = [int(n) for n in input.bond4().split(",")], 
-                                        highlightColor = ColorConverter().to_rgb("aqua")
-                                        ) 
-                # Save image
-                img.save(f"{input.filename4()}.png")
-                # Show saved PNG file from selected compound
-                dir = Path(__file__).resolve().parent
-                img_4: ImgData = {"src": str(dir / f"{input.filename4()}.png")}
-                return img_4
+
             
             else:
                 return None
@@ -349,13 +323,13 @@ def server(input, output, session):
             img4 = Image.open(f"{input.filename4()}.png")
 
             # Create a blank image template - (width, height)
-            blank_image = Image.new("RGB", (600, 600))
+            blank_image = Image.new("RGB", (940, 940))
 
             # Paste img1 to img4 together in a grid (top left, right, bottom left, right)
             blank_image.paste(img1, (0, 0))
-            blank_image.paste(img2, (300, 0))
-            blank_image.paste(img3, (0, 300))
-            blank_image.paste(img4, (300, 300))
+            blank_image.paste(img2, (470, 0))
+            blank_image.paste(img3, (0, 470))
+            blank_image.paste(img4, (470, 470))
 
             # Save combined/merged image as a new PNG file
             blank_image.save(f"{input.merge_filename()}.png")
