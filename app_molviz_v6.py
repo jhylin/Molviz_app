@@ -69,13 +69,17 @@ app_ui = ui.page_fluid(
                 {"class": "app-col"},
                 ui.p(
                     """
-                    This is a Shiny for Python web application for viewing and saving 2D images of small molecules of interests. 
-                    The main backbone libraries used are RDKit and Datamol.
-                    The data source is based on compound data that included molecular representations such as SMILES in a dataframe.
-                    For demonstration purpose, the example provided here was a set of anti-infectives sourced from ChEMBL version _.
-                    Users can generate similar app by using own compound data (e.g. compound activity data for structure-activity relationship work) with the code available.
-                    Code & license available here - https://github.com/jhylin/Molviz_app.
+                    This is an application built by using Shiny for Python web application framework. It provides features for viewing and saving 2D images of small molecules of interests. 
+                    The main libraries used are RDKit and Datamol.
+                    The data source is based on compound data in a dataframe, which included molecular representations such as SMILES.
+                    For demonstration purpose, the example provided here is a set of anti-infectives sourced from an older version of ChEMBL.
+                    Users can generate similar app by using tailored compound data for structure-activity relationships or other drug discovery-related work.
+                    For code and license:
                     """,
+                ui.a("here", href="https://github.com/jhylin/Molviz_app"),
+                    """
+                    or visit https://github.com/jhylin/Molviz_app.
+                    """
                 ),
             ),
         )
@@ -137,15 +141,21 @@ app_ui = ui.page_fluid(
         ui.column(
             6, 
             ui.tags.ul(
-            ui.tags.li(
+            {"class": "col-lg-20 py-2 mx-auto text-left"},
+            ui.div(
+                ui.tags.li(
                 """
-                2D images of molecules can be saved as PNG files, with atom indices shown"""
+                Save each compound individually as PNG files, with atom indices shown"""
             ), 
-            ui.tags.li(
+                ui.tags.li(
                 """
-                Four images can be saved as a merged grid image in this order, top left (1), top right (2), bottom left (3) and bottom right (4)
-                - numbering corresponds to the 4 tabs on the left"""
+                Save merged image, which contains 4 images in this order: 
+                top left (1), right (2), bottom left (3) and right (4) once file name is entered and confirmed
+                - numbering corresponds to 4 tabs on the left"""
             ), 
+
+            )
+
             ),
             ui.input_text("merge_filename", "File name for merged PNG images:"),
             ui.input_action_button("btn_merge", "Confirm", class_="btn-success"),
@@ -157,8 +167,26 @@ app_ui = ui.page_fluid(
                 ui.h5("Interactive data table"),
             ), 
             ui.page_fluid(
+                ui.div(
+                {"class": "col-lg-15 py-1 mx-auto text-left"},
+                ui.tags.ul(
+                ui.tags.li(
+                    """
+                    Search by compound name from the data table below
+                    """
+                ),
+                ui.tags.li(
+                    """
+                    Browse each page by clicking on the page number buttons at the bottom
+                    """
+                ),
+                ui.tags.li(
+                    """
+                    Note: searching by index number may not work as well as by name (tend to include mixed results)
+                    """
+                ))), 
                 ui.HTML(DT(df))
-                )
+                ),
             ),
 )
 
