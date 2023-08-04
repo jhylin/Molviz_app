@@ -1,6 +1,6 @@
-### Molviz_app - 2D Molecular visualisation web application
+### Molviz_app - Molecule visualiser web application
 
-#### **Bit of history**
+#### **Background**
 
 Originally I had an idea of incorporating mols2grid library within Shiny for Python web app framework (after seeing an example of a similar app in Streamlit previously), so I worked on a few ideas, but obviously mols2grid was designed to work inside Jupyter Notebook/Lab and Shiny for Python was only out of alpha at that stage so things were still being developed, and unfortunately mols2grid wasn't directly compatible with the Shiny for Python at that time. I then went away to work on another project on molecular scaffolds and left this mini project aside. However, recently I had another idea of trying to build a Shiny for Python app from the scratch (my first ever app relating to cheminformatics or chemical information), so that users in relevant fields can view and save 2D images of small molecules in a web browser environment instead of only inside a Jupyter Notebook/Lab.
 
@@ -15,7 +15,7 @@ Note: I'm sure this is not the first ever app for this type of use as there are 
 - Molviz_app may be deployed via Shinyapps.io or HuggingFace - to be decided (confirmed not to be embedded inside Quarto doc as RDKit does not have pure wheel file since it's not written purely in Python, it's written using Python and C++, therefore Shinylive version will not work)
 
 
-#### **Current status - 30/7/23**
+#### **Current status - to be updated**
 
 *Based on running the undeployed app version in VS Code*
 

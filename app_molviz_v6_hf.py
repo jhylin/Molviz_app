@@ -1,5 +1,7 @@
 # Shiny for Python app for viewing and saving 2D images of small molecules of interests
 
+# **Code edit for HuggingFace app deployment**
+
 # Current version: Improved image resolution by using rdMolDraw2D module, with highlighting option
 
 # old version: 2D images of molecules saved as PNG files via MolToFile() 
@@ -219,12 +221,14 @@ def server(input, output, session):
                                  # dpi = dots per inch
                                  dpi = 50000,
                                  scale = 10, 
-                                 write_to = f"{input.filename1()}.png",
+                                 write_to = f"www/{input.filename1()}.png",
                                  output_height = 400,
                                  output_width = 400
                                  )
-                dir = Path(__file__).resolve().parent
-                img_1: ImgData = {"src": str(dir / f"{input.filename1()}.png")}
+                
+                www_dir = Path(__file__).parent / "www"
+                #dir = Path(__file__).resolve().parent
+                img_1: ImgData = {"src": str(www_dir / f"{input.filename1()}.png")}
                 return img_1
                 
             elif input.image_style1() == "no_high":
