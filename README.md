@@ -1,11 +1,16 @@
 ### Molviz_app - Molecule visualiser web application
 
-*The final deployed app (file name: app.py) is built from venv using Python 3.9 which is compatible with Shinyapps.io (note: Python 3.11 not compatible yet)*
+*The final deployed app (with file name as app.py) is built from venv using Python 3.9 which is compatible with Shinyapps.io (note: Python 3.11 not compatible yet)*
 
-*A blog post is being written currently that will explain details of this application*
+*A blog post is being written currently with explanations and details of this application - once this is completed, it'll be added to this README.md*
 
-![Screenshots!](Molviz_app_1.png "First screenshot of the app")
+<br>
 
+#### Quick glimpse at this application
+
+![Screenshots!](Molviz_app_1.png "Screenshot of the app with introductory texts")
+![Screenshots!](Molviz_app_2.png "Screenshot showing individual & merged images")
+![Screenshots!](Molviz_app_3.png "Screenshot showing interactive data table")
 
 <br>
 
