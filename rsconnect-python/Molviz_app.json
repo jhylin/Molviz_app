@@ -1,0 +1,12 @@
+{
+    "https://api.shinyapps.io": {
+        "server_url": "https://api.shinyapps.io",
+        "filename": "/Users/jenniferlin/Molviz_app",
+        "app_url": "https://jhylin.shinyapps.io/molviz_app/",
+        "app_id": 9561213,
+        "app_guid": null,
+        "title": "molviz_app",
+        "app_mode": "python-shiny",
+        "app_store_version": 1
+    }
+}
