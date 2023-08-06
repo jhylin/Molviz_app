@@ -1,11 +1,14 @@
-# Shiny for Python app for viewing and saving 2D images of small molecules of interests
+# Shiny for Python app for viewing and highlighting 2D images of small molecules of interests
 
-# Current version: Improved image resolution by using rdMolDraw2D module, with highlighting option
+# Deployed app via Shinyapps.io: Viewing & highlighting only
+# Localhost version: saving PNG files to working directory, viewing & highlighting images
+# Possible future feature addition: PNG file download via @session.download()
 
 # old version: 2D images of molecules saved as PNG files via MolToFile() 
 # old version: Atoms & bonds highlighting via MolToImage() 
 # old version: Select atom & bond highlighting (on or off) with or without atom indices
 # old version: Changed to "atomNote" for atom labelling
+# Current version: Improved image resolution by using rdMolDraw2D module, with highlighting option
 
 
 
@@ -58,7 +61,7 @@ app_ui = ui.page_fluid(
     {"class": "col-lg-20 py-4 mx-auto text-left"},
     ui.div(
         {"style": "font-weight: bold;"},
-        ui.h4("Molecule visualiser - Molviz"),
+        ui.h4("Molecule visualiser (Molviz)"),
     ),
     ui.row(
         ui.column(
@@ -67,18 +70,52 @@ app_ui = ui.page_fluid(
                 {"class": "app-col"},
                 ui.p(
                     """
-                    This is an application built by using Shiny for Python web application framework. It provides features for viewing and saving 2D images of small molecules of interests. 
+                    This is an application built by using Shiny for Python web application framework. It provides features for viewing and highlighting 2D images of small molecules of interests. 
                     The main libraries used are RDKit and Datamol.
-                    The data source is based on compound data in a dataframe, which included molecular representations such as SMILES.
+                    The data source is based on compound data in a dataframe format, which included molecular representations such as SMILES.
                     For demonstration purpose, the example provided here is a set of anti-infectives sourced from an older version of ChEMBL.
-                    Users can generate similar app by using tailored compound data for structure-activity relationships or other drug discovery-related work.
-                    For code and license:
+                    Users can generate similar app by using tailored compound data for structure-activity relationships or pharmacokinetics-related work.
+                    For code and license, please visit
                     """,
                 ui.a("here", href="https://github.com/jhylin/Molviz_app"),
                     """
-                    or visit https://github.com/jhylin/Molviz_app.
+                    or https://github.com/jhylin/Molviz_app.
                     """
                 ),
+            ui.tags.ul(
+            {"class": "col-lg-20 py-2 mx-auto text-left"},
+            ui.div(
+                ui.tags.li(
+                """
+                View each compound individually as PNG images with atom indices shown"""
+            ), 
+                ui.tags.li(
+                """
+                Highlight substructures by selecting atoms and bonds via index numbers"""
+            ),
+                ui.tags.li(
+                """
+                View merged image once 4 individual images have been selected and once file name is entered and confirmed"""
+            ), 
+                ui.tags.li(
+                """
+                Merged image will contain 4 compound images in this order: 
+                (1) top left, (2) top right, (3) bottom left and (4) bottom right
+                - numbering corresponds to the 4 tabs below"""
+            ), 
+                ui.tags.li(
+                """
+                Interactive data table underneath the image areas will show the dataframe used to generate all the  compound images"""
+            ), 
+                ui.tags.li(
+                """
+                Please note if using the deployed version from Shinyapps.io, 
+                only viewing function is available at this stage. 
+                If building your own version of this app in an IDE setting, 
+                the localhost version should provide both saving and viewing functions"""
+            ), 
+            )
+            ),
             ),
         )
     ),
@@ -95,7 +132,7 @@ app_ui = ui.page_fluid(
                     ui.input_text_area("atom1", "Enter atom numbers to highlight:", placeholder = "e.g. 0, 1, 2, 3..."),
                     ui.input_text_area("bond1", "Enter bond numbers to highlight:", placeholder = "e.g. 0, 1, 2, 3..."),
                     ui.input_text("filename1", "File name for PNG image:"),
-                    ui.input_action_button("btn1", "Save and view", class_= "btn-success"),
+                    ui.input_action_button("btn1", "View/save", class_= "btn-success"),
                     ui.output_image("image1")
                 ),
                 ui.nav(
@@ -107,7 +144,7 @@ app_ui = ui.page_fluid(
                     ui.input_text_area("atom2", "Enter atom numbers to highlight:", placeholder = "e.g. 0, 1, 2, 3..."),
                     ui.input_text_area("bond2", "Enter bond numbers to highlight:", placeholder = "e.g. 0, 1, 2, 3..."),
                     ui.input_text("filename2", "File name for PNG image:"),
-                    ui.input_action_button("btn2", "Save and view", class_= "btn-success"),
+                    ui.input_action_button("btn2", "View/save", class_= "btn-success"),
                     ui.output_image("image2")
                 ),
                 ui.nav(
@@ -119,7 +156,7 @@ app_ui = ui.page_fluid(
                     ui.input_text_area("atom3", "Enter atom numbers to highlight:", placeholder = "e.g. 0, 1, 2, 3..."),
                     ui.input_text_area("bond3", "Enter bond numbers to highlight:", placeholder = "e.g. 0, 1, 2, 3..."),
                     ui.input_text("filename3", "File name for PNG image:"),
-                    ui.input_action_button("btn3", "Save and view", class_= "btn-success"),
+                    ui.input_action_button("btn3", "View/save", class_= "btn-success"),
                     ui.output_image("image3")
                 ),
                 ui.nav(
@@ -131,32 +168,15 @@ app_ui = ui.page_fluid(
                     ui.input_text_area("atom4", "Enter atom numbers to highlight:", placeholder = "e.g. 0, 1, 2, 3..."),
                     ui.input_text_area("bond4", "Enter bond numbers to highlight:", placeholder = "e.g. 0, 1, 2, 3..."),
                     ui.input_text("filename4", "File name for PNG image:"),
-                    ui.input_action_button("btn4", "Save and view", class_= "btn-success"),
+                    ui.input_action_button("btn4", "View/save", class_= "btn-success"),
                     ui.output_image("image4")
                 ),
             )
         ),
         ui.column(
             6, 
-            ui.tags.ul(
-            {"class": "col-lg-20 py-2 mx-auto text-left"},
-            ui.div(
-                ui.tags.li(
-                """
-                Save each compound individually as PNG files, with atom indices shown"""
-            ), 
-                ui.tags.li(
-                """
-                Save merged image, which contains 4 images in this order: 
-                top left (1), right (2), bottom left (3) and right (4) once file name is entered and confirmed
-                - numbering corresponds to 4 tabs on the left"""
-            ), 
-
-            )
-
-            ),
-            ui.input_text("merge_filename", "File name for merged PNG images:"),
-            ui.input_action_button("btn_merge", "Confirm", class_="btn-success"),
+            ui.input_text("merge_filename", "File name for merged PNG image:"),
+            ui.input_action_button("btn_merge", "View/save", class_="btn-success"),
             ui.output_image("merge_image"),
             ),
             ui.div(
