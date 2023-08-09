@@ -3,7 +3,7 @@
 # Atoms & bonds highlighting via MolToImage() 
 # Select atom & bond highlighting (on or off) with or without atom indices
 # Added texts
-# Partially using "atomNote" & "atomLabel"
+# Trialled using "atomNote" (previously "atomLabel")
 
 
 # TODO: 
@@ -206,6 +206,7 @@ def server(input, output, session):
 
             if input.image_style2() == "no_high":
                 for atom in mols[input.mol2()].GetAtoms():
+                    # Previously used 'atomLabel'
                     atom.SetProp('atomNote', str(atom.GetIdx()))
                 Draw.MolToFile(mols[input.mol2()], f"{input.filename2()}.png")
                 dir = Path(__file__).resolve().parent
