@@ -17,7 +17,7 @@ For data preparation, please see this post [here](https://jhylin.github.io/Data_
 *Screenshot showing merged image*
 
 <figure>
-    <img src="Molviz_app_3.png"
+    <img src="/Images/Molviz_app_3.png"
          alt="Screenshot showing interactive data table">
     <figcaption>Screenshot showing interactive data table</figcaption>
 </figure>
