@@ -1,15 +1,23 @@
-### Molviz_app - Molecule visualiser web application
+### Molviz_app - Molecular visualisation web application
 
-*The final deployed app (with file name as app.py) is built from venv using Python 3.9 which is compatible with Shinyapps.io (note: Python 3.11 not compatible yet)*
+For full details about this web application, please see this blog post at this [link](https://jhylin.github.io/Data_in_life_blog/posts/15_Molviz/Molviz.html) or visit https://jhylin.github.io/Data_in_life_blog/posts/15_Molviz/Molviz.html. 
 
-Please see this blog post <a rel="link" href="https://jhylin.github.io/Data_in_life_blog/posts/15_Molviz/Molviz.html"> or visit https://jhylin.github.io/Data_in_life_blog/posts/15_Molviz/Molviz.html for full details about this web application. For data preparation, please see this post <a rel="link" href="https://jhylin.github.io/Data_in_life_blog/posts/15_Molviz/itables.html"> or visit https://jhylin.github.io/Data_in_life_blog/posts/15_Molviz/itables.html.
+For data preparation, please see this post [here](https://jhylin.github.io/Data_in_life_blog/posts/15_Molviz/itables.html) or visit https://jhylin.github.io/Data_in_life_blog/posts/15_Molviz/itables.html for details.
+
+*The final deployed app (file name: app.py) was built from venv using Python 3.9 which was compatible with Shinyapps.io (note: Python 3.11 not compatible yet at the time of app deployment, this might change in the future)*
 
 <br>
 
 #### Quick glimpse at the application
 
-![Screenshots!](Molviz_app_1.png "Screenshot of the app with introductory texts")
-![Screenshots!](Molviz_app_3.png "Screenshot showing interactive data table")
+![Screenshots!](Molviz_app_1.png)
+*Screenshot of the app with introductory texts*
+<br>
+![Screenshots!](Molviz_app_2.png)
+*Screenshot showing merged image*
+<br>
+![Screenshots!](Molviz_app_3.png)
+*Screenshot showing interactive data table*
 
 <br>
 
