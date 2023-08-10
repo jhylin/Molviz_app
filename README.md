@@ -11,7 +11,7 @@ For data preparation, please see this post [here](https://jhylin.github.io/Data_
 #### Quick glimpse at the application
 
 <figure>
-    <img src="/Images/Molviz_app_1.png"
+    <img src="Molviz_app_1.png"
          alt="Screenshot of the app with introductory texts">
     <figcaption>Screenshot of the app with introductory texts</figcaption>
 </figure>
