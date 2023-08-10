@@ -2,14 +2,13 @@
 
 *The final deployed app (with file name as app.py) is built from venv using Python 3.9 which is compatible with Shinyapps.io (note: Python 3.11 not compatible yet)*
 
-*A blog post is being written currently with explanations and details of this application - once this is completed, it'll be added to this README.md*
+Please see this blog post <a rel="link" href="https://jhylin.github.io/Data_in_life_blog/posts/15_Molviz/Molviz.html"> or visit https://jhylin.github.io/Data_in_life_blog/posts/15_Molviz/Molviz.html for full details about this web application. For data preparation, please see this post <a rel="link" href="https://jhylin.github.io/Data_in_life_blog/posts/15_Molviz/itables.html"> or visit https://jhylin.github.io/Data_in_life_blog/posts/15_Molviz/itables.html.
 
 <br>
 
-#### Quick glimpse at this application
+#### Quick glimpse at the application
 
 ![Screenshots!](Molviz_app_1.png "Screenshot of the app with introductory texts")
-![Screenshots!](Molviz_app_2.png "Screenshot showing individual & merged images")
 ![Screenshots!](Molviz_app_3.png "Screenshot showing interactive data table")
 
 <br>
