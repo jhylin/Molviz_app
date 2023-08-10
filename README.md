@@ -10,14 +10,18 @@ For data preparation, please see this post [here](https://jhylin.github.io/Data_
 
 #### Quick glimpse at the application
 
-![Screenshots!](Molviz_app_1.png)
+![Screenshots](Molviz_app_1.png)
 *Screenshot of the app with introductory texts*
-<br>
-![Screenshots!](Molviz_app_2.png)
+
+![Screenshots](Molviz_app_2.png)
 *Screenshot showing merged image*
-<br>
-![Screenshots!](Molviz_app_3.png)
-*Screenshot showing interactive data table*
+
+<figure>
+    <img src="Molviz_app_3.png"
+         alt="Screenshot showing interactive data table">
+    <figcaption>Screenshot showing interactive data table</figcaption>
+</figure>
+
 
 <br>
 
