@@ -1,8 +1,10 @@
 ### Molviz_app - Molecular visualisation web application
 
-For full details about this web application, please see this blog post at this [link](https://jhylin.github.io/Data_in_life_blog/posts/15_Molviz/Molviz.html) or visit https://jhylin.github.io/Data_in_life_blog/posts/15_Molviz/Molviz.html. 
+#### Details of the application
 
-For data preparation, please see this post [here](https://jhylin.github.io/Data_in_life_blog/posts/15_Molviz/itables.html) or visit https://jhylin.github.io/Data_in_life_blog/posts/15_Molviz/itables.html for details.
+For full details about this web application, please see this blog post at https://jhylin.github.io/Data_in_life_blog/posts/15_Molviz/Molviz.html. 
+
+For data preparation, please see this post at https://jhylin.github.io/Data_in_life_blog/posts/15_Molviz/itables.html for details.
 
 *The final deployed app (file name: app.py) was built from venv using Python 3.9 which was compatible with Shinyapps.io (note: Python 3.11 not compatible yet at the time of app deployment, this might change in the future)*
 
