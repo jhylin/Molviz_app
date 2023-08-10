@@ -14,24 +14,21 @@ For data preparation, please see this post [here](https://jhylin.github.io/Data_
     <img src="/Images/Molviz_app_1.png"
          alt="Screenshot of the app with introductory texts">
     <figcaption>Screenshot of the app with introductory texts</figcaption>
-</figure>
+</figure>  
 
-<br>
 
 <figure>
     <img src="/Images/Molviz_app_2.png"
          alt="Screenshot showing merged image with substructure highlighting">
     <figcaption>Screenshot showing merged image with substructure highlighting</figcaption>
-</figure>
+</figure>  
 
-<br>
 
 <figure>
     <img src="/Images/Molviz_app_3.png"
          alt="Screenshot showing interactive data table">
     <figcaption>Screenshot showing interactive data table</figcaption>
-</figure>
+</figure>  
 
-<br>
 
 <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
